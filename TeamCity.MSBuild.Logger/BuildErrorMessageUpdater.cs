@@ -1,19 +1,10 @@
 namespace TeamCity.MSBuild.Logger;
 
-using JetBrains.TeamCity.ServiceMessages;
-using JetBrains.TeamCity.ServiceMessages.Write.Special;
-using Microsoft.Build.Framework;
-
-internal class BuildErrorMessageUpdater: IServiceMessageUpdater
+internal class BuildErrorMessageUpdater(IEventContext eventContext) : IServiceMessageUpdater
 {
-    private readonly IEventContext _eventContext;
-
-    public BuildErrorMessageUpdater(IEventContext eventContext) => 
-        _eventContext = eventContext;
-
     public IServiceMessage UpdateServiceMessage(IServiceMessage message)
     {
-        if (!_eventContext.TryGetEvent(out var buildEventManager)
+        if (!eventContext.TryGetEvent(out var buildEventManager)
             || buildEventManager is not BuildErrorEventArgs error)
         {
             return message;

@@ -2,15 +2,9 @@
 // ReSharper disable UnusedMember.Local
 namespace TeamCity.MSBuild.Logger;
 
-using System;
-using Microsoft.Build.Framework;
-using EventHandlers;
-using JetBrains.TeamCity.ServiceMessages.Read;
 using JetBrains.TeamCity.ServiceMessages.Write;
-using JetBrains.TeamCity.ServiceMessages.Write.Special;
 using JetBrains.TeamCity.ServiceMessages.Write.Special.Impl.Updater;
-using Pure.DI;
-using static Pure.DI.Lifetime;
+using static Lifetime;
 
 internal partial class Composition
 {

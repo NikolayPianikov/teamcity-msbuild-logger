@@ -1,30 +1,18 @@
 ﻿// ReSharper disable MemberCanBePrivate.Global
 namespace TeamCity.MSBuild.Logger.Tests.Helpers;
 
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using Shouldly;
-    
-public class CommandLine
+public class CommandLine(
+    string executableFile,
+    IDictionary<string, string?> environmentVariables,
+    params string[] args)
 {
-    private readonly IDictionary<string, string?> _environmentVariables;
-
-    public CommandLine(string executableFile, IDictionary<string, string?> environmentVariables, params string[] args)
-    {
-        ExecutableFile = executableFile ?? throw new ArgumentNullException(nameof(executableFile));
-        Args = args ?? throw new ArgumentNullException(nameof(args));
-        _environmentVariables = environmentVariables ?? throw new ArgumentNullException(nameof(environmentVariables));
-    }
+    private readonly IDictionary<string, string?> _environmentVariables = environmentVariables ?? throw new ArgumentNullException(nameof(environmentVariables));
 
     public static string WorkingDirectory => Path.GetFullPath(Path.Combine(typeof(CommandLine).GetTypeInfo().Assembly.Location, "../../../../../"));
 
-    public string ExecutableFile { get; }
+    public string ExecutableFile { get; } = executableFile ?? throw new ArgumentNullException(nameof(executableFile));
 
-    public string[] Args { get; }
+    public string[] Args { get; } = args ?? throw new ArgumentNullException(nameof(args));
 
     public bool TryExecute(out CommandLineResult? result)
     {

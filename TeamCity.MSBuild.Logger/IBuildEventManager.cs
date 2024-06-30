@@ -1,8 +1,5 @@
 ﻿namespace TeamCity.MSBuild.Logger;
 
-using System.Collections.Generic;
-using Microsoft.Build.Framework;
-
 internal interface IBuildEventManager
 {
     void AddProjectStartedEvent(ProjectStartedEventArgs e, bool requireTimestamp);

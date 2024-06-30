@@ -1,24 +1,12 @@
 ﻿namespace TeamCity.MSBuild.Logger;
 
-using System;
-using System.IO;
-using System.Threading;
-
 // ReSharper disable once ClassNeverInstantiated.Global
-internal class DefaultConsole : IConsole, IInitializable
+internal class DefaultConsole(IDiagnostics diagnostics) : IConsole, IInitializable
 {
-    private readonly IDiagnostics _diagnostics;
-    private readonly TextWriter _out;
-    // ReSharper disable once IdentifierTypo
+    private readonly IDiagnostics _diagnostics = diagnostics ?? throw new ArgumentNullException(nameof(diagnostics));
+    private readonly TextWriter _out = Console.Out;
     private int _reentrancy;
 
-    public DefaultConsole(IDiagnostics diagnostics)
-    {
-        _diagnostics = diagnostics ?? throw new ArgumentNullException(nameof(diagnostics));
-        // https://youtrack.jetbrains.com/issue/TW-72330
-        _out = Console.Out;
-    }
-        
     public void Write(string? text)
     {
         if (text is null || string.IsNullOrEmpty(text))

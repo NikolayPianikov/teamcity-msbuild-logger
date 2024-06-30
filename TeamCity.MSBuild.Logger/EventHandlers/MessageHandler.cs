@@ -1,28 +1,17 @@
 ﻿namespace TeamCity.MSBuild.Logger.EventHandlers;
 
-using System;
-using System.Collections.Generic;
-using Microsoft.Build.Framework;
-
 // ReSharper disable once ClassNeverInstantiated.Global
-internal class MessageHandler : IBuildEventHandler<BuildMessageEventArgs>
+internal class MessageHandler(
+    ILoggerContext context,
+    IMessageWriter messageWriter,
+    IDeferredMessageWriter deferredMessageWriter,
+    IBuildEventManager buildEventManager)
+    : IBuildEventHandler<BuildMessageEventArgs>
 {
-    private readonly IBuildEventManager _buildEventManager;
-    private readonly IDeferredMessageWriter _deferredMessageWriter;
-    private readonly IMessageWriter _messageWriter;
-    private readonly ILoggerContext _context;
-
-    public MessageHandler(
-        ILoggerContext context,
-        IMessageWriter messageWriter,
-        IDeferredMessageWriter deferredMessageWriter,
-        IBuildEventManager buildEventManager)
-    {
-        _buildEventManager = buildEventManager ?? throw new ArgumentNullException(nameof(buildEventManager));
-        _deferredMessageWriter = deferredMessageWriter ?? throw new ArgumentNullException(nameof(deferredMessageWriter));
-        _messageWriter = messageWriter ?? throw new ArgumentNullException(nameof(messageWriter));
-        _context = context ?? throw new ArgumentNullException(nameof(context));
-    }
+    private readonly IBuildEventManager _buildEventManager = buildEventManager ?? throw new ArgumentNullException(nameof(buildEventManager));
+    private readonly IDeferredMessageWriter _deferredMessageWriter = deferredMessageWriter ?? throw new ArgumentNullException(nameof(deferredMessageWriter));
+    private readonly IMessageWriter _messageWriter = messageWriter ?? throw new ArgumentNullException(nameof(messageWriter));
+    private readonly ILoggerContext _context = context ?? throw new ArgumentNullException(nameof(context));
 
     public void Handle(BuildMessageEventArgs e)
     {

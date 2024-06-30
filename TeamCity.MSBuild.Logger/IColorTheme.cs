@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace TeamCity.MSBuild.Logger;
+﻿namespace TeamCity.MSBuild.Logger;
 
 internal interface IColorTheme
 {

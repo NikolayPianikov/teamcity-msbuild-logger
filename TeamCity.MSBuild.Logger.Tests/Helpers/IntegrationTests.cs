@@ -1,12 +1,5 @@
 ﻿namespace TeamCity.MSBuild.Logger.Tests.Helpers;
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Shouldly;
-using Xunit;
-
 internal static class IntegrationTests
 {
     public static void ResultShouldBe(this CommandLineResult? actualResult, CommandLineResult? expectedResult, bool? producesTeamCityServiceMessages = null)

@@ -1,9 +1,6 @@
 // ReSharper disable ClassNeverInstantiated.Global
 namespace TeamCity.MSBuild.Logger;
 
-using System;
-using Microsoft.Build.Framework;
-
 internal class EventContext : IEventRegistry, IEventContext
 {
     private BuildEventArgs? _event;

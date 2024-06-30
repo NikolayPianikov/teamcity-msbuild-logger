@@ -1,16 +1,11 @@
 ﻿namespace TeamCity.MSBuild.Logger;
 
-using System;
-using Pure.DI;
-
 // ReSharper disable once ClassNeverInstantiated.Global
-internal class TeamCityColorTheme : IColorTheme
+internal class TeamCityColorTheme(
+    [Tag(ColorThemeMode.Default)] IColorTheme defaultColorTheme)
+    : IColorTheme
 {
-    private readonly IColorTheme _defaultColorTheme;
-
-    public TeamCityColorTheme(
-        [Tag(ColorThemeMode.Default)] IColorTheme defaultColorTheme) =>
-        _defaultColorTheme = defaultColorTheme ?? throw new ArgumentNullException(nameof(defaultColorTheme));
+    private readonly IColorTheme _defaultColorTheme = defaultColorTheme ?? throw new ArgumentNullException(nameof(defaultColorTheme));
 
     public ConsoleColor GetConsoleColor(Color color) => 
         _defaultColorTheme.GetConsoleColor(color);

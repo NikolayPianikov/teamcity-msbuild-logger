@@ -1,9 +1,5 @@
 namespace TeamCity.MSBuild.Logger;
 
-using System;
-using System.Collections.Generic;
-using Microsoft.Build.Framework;
-
 internal class TaskItemItemSpecComparer : IComparer<ITaskItem>
 {
     public static readonly IComparer<ITaskItem> Shared = new TaskItemItemSpecComparer();

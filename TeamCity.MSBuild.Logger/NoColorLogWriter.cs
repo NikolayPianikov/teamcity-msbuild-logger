@@ -1,15 +1,9 @@
 ﻿namespace TeamCity.MSBuild.Logger;
 
-using System;
-
 // ReSharper disable once ClassNeverInstantiated.Global
-internal class NoColorLogWriter : ILogWriter
+internal class NoColorLogWriter(IConsole defaultConsole) : ILogWriter
 {
-    private readonly IConsole _defaultConsole;
-
-    public NoColorLogWriter(
-        IConsole defaultConsole) =>
-        _defaultConsole = defaultConsole ?? throw new ArgumentNullException(nameof(defaultConsole));
+    private readonly IConsole _defaultConsole = defaultConsole ?? throw new ArgumentNullException(nameof(defaultConsole));
 
     public void Write(string? message, IConsole? console = null)
 {

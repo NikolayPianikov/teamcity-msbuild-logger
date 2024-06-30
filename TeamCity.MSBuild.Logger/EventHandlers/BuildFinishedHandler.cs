@@ -1,44 +1,27 @@
 ﻿namespace TeamCity.MSBuild.Logger.EventHandlers;
 
-using System;
-using Microsoft.Build.Framework;
-using System.Linq;
-using System.Collections.Generic;
-
 // ReSharper disable once ClassNeverInstantiated.Global
-internal class BuildFinishedHandler : IBuildEventHandler<BuildFinishedEventArgs>
+internal class BuildFinishedHandler(
+    ILoggerContext context,
+    ILogWriter logWriter,
+    IMessageWriter messageWriter,
+    IBuildEventManager buildEventManager,
+    ILogFormatter logFormatter,
+    IEventFormatter eventFormatter,
+    IHierarchicalMessageWriter hierarchicalMessageWriter,
+    IStringService stringService,
+    IStatistics statistics)
+    : IBuildEventHandler<BuildFinishedEventArgs>
 {
-    private readonly IStatistics _statistics;
-    private readonly IStringService _stringService;
-    private readonly IHierarchicalMessageWriter _hierarchicalMessageWriter;
-    private readonly IEventFormatter _eventFormatter;
-    private readonly ILogFormatter _logFormatter;
-    private readonly IBuildEventManager _buildEventManager;
-    private readonly IMessageWriter _messageWriter;
-    private readonly ILoggerContext _context;
-    private readonly ILogWriter _logWriter;
-
-    public BuildFinishedHandler(
-        ILoggerContext context,
-        ILogWriter logWriter,
-        IMessageWriter messageWriter,
-        IBuildEventManager buildEventManager,
-        ILogFormatter logFormatter,
-        IEventFormatter eventFormatter,
-        IHierarchicalMessageWriter hierarchicalMessageWriter,
-        IStringService stringService,
-        IStatistics statistics)
-    {
-        _statistics = statistics ?? throw new ArgumentNullException(nameof(statistics));
-        _stringService = stringService ?? throw new ArgumentNullException(nameof(stringService));
-        _hierarchicalMessageWriter = hierarchicalMessageWriter ?? throw new ArgumentNullException(nameof(hierarchicalMessageWriter));
-        _eventFormatter = eventFormatter ?? throw new ArgumentNullException(nameof(eventFormatter));
-        _logFormatter = logFormatter ?? throw new ArgumentNullException(nameof(logFormatter));
-        _buildEventManager = buildEventManager ?? throw new ArgumentNullException(nameof(buildEventManager));
-        _messageWriter = messageWriter ?? throw new ArgumentNullException(nameof(messageWriter));
-        _context = context ?? throw new ArgumentNullException(nameof(context));
-        _logWriter = logWriter ?? throw new ArgumentNullException(nameof(logWriter));
-    }
+    private readonly IStatistics _statistics = statistics ?? throw new ArgumentNullException(nameof(statistics));
+    private readonly IStringService _stringService = stringService ?? throw new ArgumentNullException(nameof(stringService));
+    private readonly IHierarchicalMessageWriter _hierarchicalMessageWriter = hierarchicalMessageWriter ?? throw new ArgumentNullException(nameof(hierarchicalMessageWriter));
+    private readonly IEventFormatter _eventFormatter = eventFormatter ?? throw new ArgumentNullException(nameof(eventFormatter));
+    private readonly ILogFormatter _logFormatter = logFormatter ?? throw new ArgumentNullException(nameof(logFormatter));
+    private readonly IBuildEventManager _buildEventManager = buildEventManager ?? throw new ArgumentNullException(nameof(buildEventManager));
+    private readonly IMessageWriter _messageWriter = messageWriter ?? throw new ArgumentNullException(nameof(messageWriter));
+    private readonly ILoggerContext _context = context ?? throw new ArgumentNullException(nameof(context));
+    private readonly ILogWriter _logWriter = logWriter ?? throw new ArgumentNullException(nameof(logWriter));
 
     public void Handle(BuildFinishedEventArgs e)
     {
@@ -213,7 +196,7 @@ internal class BuildFinishedHandler : IBuildEventHandler<BuildFinishedEventArgs>
             var key = new ErrorWarningSummaryDictionaryKey(warningEventArgs.BuildEventContext, targetName);
             if (!dictionary.TryGetValue(key, out var list))
             {
-                list = new List<T>();
+                list = [];
                 dictionary.Add(key, list);
             }
 

@@ -1,7 +1,5 @@
 ﻿namespace TeamCity.MSBuild.Logger;
 
-using System;
-
 // ReSharper disable once ClassNeverInstantiated.Global
 internal class DefaultColorTheme : IColorTheme
 {

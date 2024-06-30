@@ -1,40 +1,25 @@
 ﻿namespace TeamCity.MSBuild.Logger.EventHandlers;
 
-using System;
-using System.Collections;
-using Microsoft.Build.Framework;
-
 // ReSharper disable once ClassNeverInstantiated.Global
-internal class TargetFinishedHandler : IBuildEventHandler<TargetFinishedEventArgs>
+internal class TargetFinishedHandler(
+    ILoggerContext context,
+    ILogWriter logWriter,
+    IPerformanceCounterFactory performanceCounterFactory,
+    IMessageWriter messageWriter,
+    IHierarchicalMessageWriter hierarchicalMessageWriter,
+    IDeferredMessageWriter deferredMessageWriter,
+    IBuildEventManager buildEventManager,
+    IStringService stringService)
+    : IBuildEventHandler<TargetFinishedEventArgs>
 {
-    private readonly IStringService _stringService;
-    private readonly IHierarchicalMessageWriter _hierarchicalMessageWriter;
-    private readonly IBuildEventManager _buildEventManager;
-    private readonly IDeferredMessageWriter _deferredMessageWriter;
-    private readonly IMessageWriter _messageWriter;
-    private readonly ILoggerContext _context;
-    private readonly ILogWriter _logWriter;
-    private readonly IPerformanceCounterFactory _performanceCounterFactory;
-
-    public TargetFinishedHandler(
-        ILoggerContext context,
-        ILogWriter logWriter,
-        IPerformanceCounterFactory performanceCounterFactory,
-        IMessageWriter messageWriter,
-        IHierarchicalMessageWriter hierarchicalMessageWriter,
-        IDeferredMessageWriter deferredMessageWriter,
-        IBuildEventManager buildEventManager,
-        IStringService stringService)
-    {
-        _stringService = stringService ?? throw new ArgumentNullException(nameof(stringService));
-        _hierarchicalMessageWriter = hierarchicalMessageWriter ?? throw new ArgumentNullException(nameof(hierarchicalMessageWriter));
-        _buildEventManager = buildEventManager ?? throw new ArgumentNullException(nameof(buildEventManager));
-        _deferredMessageWriter = deferredMessageWriter ?? throw new ArgumentNullException(nameof(deferredMessageWriter));
-        _messageWriter = messageWriter ?? throw new ArgumentNullException(nameof(messageWriter));
-        _context = context ?? throw new ArgumentNullException(nameof(context));
-        _logWriter = logWriter ?? throw new ArgumentNullException(nameof(logWriter));
-        _performanceCounterFactory = performanceCounterFactory ?? throw new ArgumentNullException(nameof(performanceCounterFactory));
-    }
+    private readonly IStringService _stringService = stringService ?? throw new ArgumentNullException(nameof(stringService));
+    private readonly IHierarchicalMessageWriter _hierarchicalMessageWriter = hierarchicalMessageWriter ?? throw new ArgumentNullException(nameof(hierarchicalMessageWriter));
+    private readonly IBuildEventManager _buildEventManager = buildEventManager ?? throw new ArgumentNullException(nameof(buildEventManager));
+    private readonly IDeferredMessageWriter _deferredMessageWriter = deferredMessageWriter ?? throw new ArgumentNullException(nameof(deferredMessageWriter));
+    private readonly IMessageWriter _messageWriter = messageWriter ?? throw new ArgumentNullException(nameof(messageWriter));
+    private readonly ILoggerContext _context = context ?? throw new ArgumentNullException(nameof(context));
+    private readonly ILogWriter _logWriter = logWriter ?? throw new ArgumentNullException(nameof(logWriter));
+    private readonly IPerformanceCounterFactory _performanceCounterFactory = performanceCounterFactory ?? throw new ArgumentNullException(nameof(performanceCounterFactory));
 
     public void Handle(TargetFinishedEventArgs e)
     {

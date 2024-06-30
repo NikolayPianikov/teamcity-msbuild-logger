@@ -1,8 +1,5 @@
 ﻿namespace TeamCity.MSBuild.Logger;
 
-using System.Collections.Generic;
-using Microsoft.Build.Framework;
-
 internal class ComparerContextNodeIdTargetId : IEqualityComparer<BuildEventContext>
 {
     public static readonly IEqualityComparer<BuildEventContext> Shared = new ComparerContextNodeIdTargetId();

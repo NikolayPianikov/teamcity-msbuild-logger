@@ -1,8 +1,5 @@
 namespace TeamCity.MSBuild.Logger;
 
-using System;
-using System.Collections.Generic;
-
 internal class DescendingByElapsedTime : IComparer<IPerformanceCounter>
 {
     public static readonly IComparer<IPerformanceCounter> Shared = new DescendingByElapsedTime();

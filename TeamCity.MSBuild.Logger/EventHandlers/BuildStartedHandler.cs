@@ -1,32 +1,19 @@
 ﻿namespace TeamCity.MSBuild.Logger.EventHandlers;
 
-using Microsoft.Build.Framework;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-
 // ReSharper disable once ClassNeverInstantiated.Global
-internal class BuildStartedHandler : IBuildEventHandler<BuildStartedEventArgs>
+internal class BuildStartedHandler(
+    ILoggerContext context,
+    ILogWriter logWriter,
+    IMessageWriter messageWriter,
+    IHierarchicalMessageWriter hierarchicalMessageWriter,
+    IStringService stringService)
+    : IBuildEventHandler<BuildStartedEventArgs>
 {
-    private readonly IStringService _stringService;
-    private readonly IHierarchicalMessageWriter _hierarchicalMessageWriter;
-    private readonly IMessageWriter _messageWriter;
-    private readonly ILoggerContext _context;
-    private readonly ILogWriter _logWriter;
-
-    public BuildStartedHandler(
-        ILoggerContext context,
-        ILogWriter logWriter,
-        IMessageWriter messageWriter,
-        IHierarchicalMessageWriter hierarchicalMessageWriter,
-        IStringService stringService)
-    {
-            _stringService = stringService ?? throw new ArgumentNullException(nameof(stringService));
-            _hierarchicalMessageWriter = hierarchicalMessageWriter ?? throw new ArgumentNullException(nameof(hierarchicalMessageWriter));
-            _messageWriter = messageWriter ?? throw new ArgumentNullException(nameof(messageWriter));
-            _context = context ?? throw new ArgumentNullException(nameof(context));
-            _logWriter = logWriter ?? throw new ArgumentNullException(nameof(logWriter));
-        }
+    private readonly IStringService _stringService = stringService ?? throw new ArgumentNullException(nameof(stringService));
+    private readonly IHierarchicalMessageWriter _hierarchicalMessageWriter = hierarchicalMessageWriter ?? throw new ArgumentNullException(nameof(hierarchicalMessageWriter));
+    private readonly IMessageWriter _messageWriter = messageWriter ?? throw new ArgumentNullException(nameof(messageWriter));
+    private readonly ILoggerContext _context = context ?? throw new ArgumentNullException(nameof(context));
+    private readonly ILogWriter _logWriter = logWriter ?? throw new ArgumentNullException(nameof(logWriter));
 
     public void Handle(BuildStartedEventArgs e)
     {

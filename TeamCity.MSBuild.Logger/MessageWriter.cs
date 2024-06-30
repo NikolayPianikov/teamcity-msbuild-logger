@@ -1,36 +1,22 @@
 ﻿namespace TeamCity.MSBuild.Logger;
 
-using Microsoft.Build.Framework;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 // ReSharper disable once ClassNeverInstantiated.Global
-internal class MessageWriter: IMessageWriter
+internal class MessageWriter(
+    ILoggerContext context,
+    ILogWriter logWriter,
+    IBuildEventManager buildEventManager,
+    ILogFormatter logFormatter,
+    IEventFormatter eventFormatter,
+    IStringService stringService)
+    : IMessageWriter
 {
-    private readonly IStringService _stringService;
-    private readonly IEventFormatter _eventFormatter;
-    private readonly ILogFormatter _logFormatter;
-    private readonly IBuildEventManager _buildEventManager;
-    private static readonly string[] NewLines = { "\r\n", "\n" };
-    private readonly ILoggerContext _context;
-    private readonly ILogWriter _logWriter;
-
-    public MessageWriter(
-        ILoggerContext context,
-        ILogWriter logWriter,
-        IBuildEventManager buildEventManager,
-        ILogFormatter logFormatter,
-        IEventFormatter eventFormatter,
-        IStringService stringService)
-    {
-        _stringService = stringService ?? throw new ArgumentNullException(nameof(stringService));
-        _eventFormatter = eventFormatter ?? throw new ArgumentNullException(nameof(eventFormatter));
-        _logFormatter = logFormatter ?? throw new ArgumentNullException(nameof(logFormatter));
-        _buildEventManager = buildEventManager ?? throw new ArgumentNullException(nameof(buildEventManager));
-        _context = context ?? throw new ArgumentNullException(nameof(context));
-        _logWriter = logWriter ?? throw new ArgumentNullException(nameof(logWriter));
-    }
+    private readonly IStringService _stringService = stringService ?? throw new ArgumentNullException(nameof(stringService));
+    private readonly IEventFormatter _eventFormatter = eventFormatter ?? throw new ArgumentNullException(nameof(eventFormatter));
+    private readonly ILogFormatter _logFormatter = logFormatter ?? throw new ArgumentNullException(nameof(logFormatter));
+    private readonly IBuildEventManager _buildEventManager = buildEventManager ?? throw new ArgumentNullException(nameof(buildEventManager));
+    private static readonly string[] NewLines = ["\r\n", "\n"];
+    private readonly ILoggerContext _context = context ?? throw new ArgumentNullException(nameof(context));
+    private readonly ILogWriter _logWriter = logWriter ?? throw new ArgumentNullException(nameof(logWriter));
 
     public void WriteLinePrefix(BuildEventContext e, DateTime eventTimeStamp, bool isMessagePrefix) => 
         WriteLinePrefix(_context.GetFullProjectKey(e).ToString(_context.Verbosity), eventTimeStamp, isMessagePrefix);

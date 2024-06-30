@@ -1,16 +1,9 @@
 ﻿// ReSharper disable ClassNeverInstantiated.Global
 namespace TeamCity.MSBuild.Logger;
 
-using System;
-using JetBrains.TeamCity.ServiceMessages.Write.Special;
-
-internal class FlowIdGenerator: IFlowIdGenerator
+internal class FlowIdGenerator(Parameters parameters) : IFlowIdGenerator
 {
-    private readonly Parameters _parameters;
     private bool _isFirst = true;
-
-    public FlowIdGenerator(Parameters parameters) => 
-        _parameters = parameters;
 
     public string NewFlowId()
     {
@@ -18,7 +11,7 @@ internal class FlowIdGenerator: IFlowIdGenerator
         if (_isFirst)
         {
             _isFirst = false;
-            var flowId = _parameters.FlowId;
+            var flowId = parameters.FlowId;
             if (!string.IsNullOrWhiteSpace(flowId))
             {
                 return flowId;

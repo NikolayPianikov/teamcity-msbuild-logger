@@ -1,15 +1,6 @@
 ﻿// ReSharper disable StringLiteralTypo
 namespace TeamCity.MSBuild.Logger.Tests;
 
-using System.Linq;
-using JetBrains.TeamCity.ServiceMessages;
-using JetBrains.TeamCity.ServiceMessages.Read;
-using JetBrains.TeamCity.ServiceMessages.Write;
-using JetBrains.TeamCity.ServiceMessages.Write.Special;
-using Microsoft.Build.Framework;
-using Moq;
-using Xunit;
-
 public class TeamCityHierarchicalMessageWriterTests
 {
     private readonly Mock<IColorTheme> _colorTheme;
@@ -86,7 +77,7 @@ public class TeamCityHierarchicalMessageWriterTests
         // Given
         var writer = CreateInstance();
         const string serviceMessage = "##teamcity[abc]";
-        _serviceMessageParser.Setup(i => i.ParseServiceMessages(serviceMessage.Trim())).Returns(Enumerable.Empty<IServiceMessage>());
+        _serviceMessageParser.Setup(i => i.ParseServiceMessages(serviceMessage.Trim())).Returns([]);
 
         // When
         writer.Write(serviceMessage + "\n");

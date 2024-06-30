@@ -1,19 +1,10 @@
 ﻿namespace TeamCity.MSBuild.Logger;
 
-using System.Globalization;
-using Microsoft.Build.Framework;
-
-internal class ProjectFullKey
+internal class ProjectFullKey(int projectKey, int entryPointKey)
 {
-    public ProjectFullKey(int projectKey, int entryPointKey)
-    {
-        ProjectKey = projectKey;
-        EntryPointKey = entryPointKey;
-    }
+    public int ProjectKey { get; } = projectKey;
 
-    public int ProjectKey { get; }
-
-    public int EntryPointKey { get; }
+    public int EntryPointKey { get; } = entryPointKey;
 
     public string ToString(LoggerVerbosity verbosity)
     {

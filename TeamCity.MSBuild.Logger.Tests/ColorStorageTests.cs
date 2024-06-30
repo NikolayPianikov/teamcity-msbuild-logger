@@ -1,8 +1,5 @@
 ﻿namespace TeamCity.MSBuild.Logger.Tests;
 
-using Shouldly;
-using Xunit;
-
 public class ColorStorageTests
 {
     [Fact]

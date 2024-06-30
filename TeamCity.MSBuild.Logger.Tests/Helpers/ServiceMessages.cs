@@ -1,12 +1,5 @@
 ﻿namespace TeamCity.MSBuild.Logger.Tests.Helpers;
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using JetBrains.TeamCity.ServiceMessages;
-using JetBrains.TeamCity.ServiceMessages.Read;
-using Shouldly;
-    
 internal static class ServiceMessages
 {
     private static readonly IServiceMessageParser Parser = new ServiceMessageParser();
@@ -121,17 +114,12 @@ internal static class ServiceMessages
         public string ValueAttr { get; }
     }
 
-    private class Flow
+    private class Flow(string flowId)
     {
         private readonly Stack<Message> _messages = new();
         private readonly HashSet<string> _statistics = new(StringComparer.CurrentCultureIgnoreCase);
 
-        public Flow(string flowId)
-        {
-            FlowId = flowId;
-        }
-
-        public string? FlowId { get; private set; }
+        public string? FlowId { get; private set; } = flowId;
 
         public bool IsFinished => _messages.Count == 0;
 
@@ -256,28 +244,18 @@ internal static class ServiceMessages
         }
     }
 
-    private static void Fail(string message)
-    {
+    private static void Fail(string message) => 
         throw new Exception(message);
-    }
 
-    private static void IsNotNull(string str, string message)
-    {
+    private static void IsNotNull(string str, string message) =>
         str.ShouldNotBeNull(message);
-    }
 
-    private static void Greater(int val1, int val2, string message)
-    {
+    private static void Greater(int val1, int val2, string message) =>
         val1.ShouldBeGreaterThan(val2, message);
-    }
 
-    private static void IsNotEmpty(string str, string message = "")
-    {
+    private static void IsNotEmpty(string str, string message = "") =>
         str.ShouldNotBeNullOrEmpty(message);
-    }
 
-    private static void AreEqual<T>(T val1, T val2, string message)
-    {
+    private static void AreEqual<T>(T val1, T val2, string message) =>
         val1.ShouldBe(val2, message);
-    }
 }

@@ -1,14 +1,9 @@
 ﻿namespace TeamCity.MSBuild.Logger;
 
-using System;
-using System.Globalization;
-using System.Text;
-using Microsoft.Build.Framework;
-
 // ReSharper disable once ClassNeverInstantiated.Global
 internal class EventFormatter : IEventFormatter
 {
-    private static readonly string[] NewLines = {"\r\n", "\n"};
+    private static readonly string[] NewLines = ["\r\n", "\n"];
 
     public string FormatEventMessage(
         BuildErrorEventArgs e,

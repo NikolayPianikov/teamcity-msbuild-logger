@@ -1,24 +1,15 @@
 ﻿namespace TeamCity.MSBuild.Logger.EventHandlers;
 
-using System;
-using Microsoft.Build.Framework;
-
 // ReSharper disable once ClassNeverInstantiated.Global
-internal class CustomEventHandler : IBuildEventHandler<CustomBuildEventArgs>
+internal class CustomEventHandler(
+    ILoggerContext context,
+    IMessageWriter messageWriter,
+    IDeferredMessageWriter deferredMessageWriter)
+    : IBuildEventHandler<CustomBuildEventArgs>
 {
-    private readonly IDeferredMessageWriter _deferredMessageWriter;
-    private readonly IMessageWriter _messageWriter;
-    private readonly ILoggerContext _context;
-
-    public CustomEventHandler(
-        ILoggerContext context,
-        IMessageWriter messageWriter,
-        IDeferredMessageWriter deferredMessageWriter)
-    {
-            _deferredMessageWriter = deferredMessageWriter ?? throw new ArgumentNullException(nameof(deferredMessageWriter));
-            _messageWriter = messageWriter ?? throw new ArgumentNullException(nameof(messageWriter));
-            _context = context ?? throw new ArgumentNullException(nameof(context));
-        }
+    private readonly IDeferredMessageWriter _deferredMessageWriter = deferredMessageWriter ?? throw new ArgumentNullException(nameof(deferredMessageWriter));
+    private readonly IMessageWriter _messageWriter = messageWriter ?? throw new ArgumentNullException(nameof(messageWriter));
+    private readonly ILoggerContext _context = context ?? throw new ArgumentNullException(nameof(context));
 
     public void Handle(CustomBuildEventArgs e)
     {

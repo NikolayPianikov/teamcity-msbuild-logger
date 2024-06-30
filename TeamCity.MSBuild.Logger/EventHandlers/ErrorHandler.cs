@@ -1,33 +1,21 @@
 ﻿namespace TeamCity.MSBuild.Logger.EventHandlers;
 
-using System;
-using Microsoft.Build.Framework;
-
 // ReSharper disable once ClassNeverInstantiated.Global
-internal class ErrorHandler : IBuildEventHandler<BuildErrorEventArgs>
+internal class ErrorHandler(
+    ILoggerContext context,
+    ILogWriter logWriter,
+    IMessageWriter messageWriter,
+    IDeferredMessageWriter deferredMessageWriter,
+    IBuildEventManager buildEventManager,
+    IEventFormatter eventFormatter)
+    : IBuildEventHandler<BuildErrorEventArgs>
 {
-    private readonly IEventFormatter _eventFormatter;
-    private readonly IBuildEventManager _buildEventManager;
-    private readonly IDeferredMessageWriter _deferredMessageWriter;
-    private readonly IMessageWriter _messageWriter;
-    private readonly ILoggerContext _context;
-    private readonly ILogWriter _logWriter;
-
-    public ErrorHandler(
-        ILoggerContext context,
-        ILogWriter logWriter,
-        IMessageWriter messageWriter,
-        IDeferredMessageWriter deferredMessageWriter,
-        IBuildEventManager buildEventManager,
-        IEventFormatter eventFormatter)
-    {
-        _eventFormatter = eventFormatter ?? throw new ArgumentNullException(nameof(eventFormatter));
-        _buildEventManager = buildEventManager ?? throw new ArgumentNullException(nameof(buildEventManager));
-        _deferredMessageWriter = deferredMessageWriter ?? throw new ArgumentNullException(nameof(deferredMessageWriter));
-        _messageWriter = messageWriter ?? throw new ArgumentNullException(nameof(messageWriter));
-        _context = context ?? throw new ArgumentNullException(nameof(context));
-        _logWriter = logWriter ?? throw new ArgumentNullException(nameof(logWriter));
-    }
+    private readonly IEventFormatter _eventFormatter = eventFormatter ?? throw new ArgumentNullException(nameof(eventFormatter));
+    private readonly IBuildEventManager _buildEventManager = buildEventManager ?? throw new ArgumentNullException(nameof(buildEventManager));
+    private readonly IDeferredMessageWriter _deferredMessageWriter = deferredMessageWriter ?? throw new ArgumentNullException(nameof(deferredMessageWriter));
+    private readonly IMessageWriter _messageWriter = messageWriter ?? throw new ArgumentNullException(nameof(messageWriter));
+    private readonly ILoggerContext _context = context ?? throw new ArgumentNullException(nameof(context));
+    private readonly ILogWriter _logWriter = logWriter ?? throw new ArgumentNullException(nameof(logWriter));
 
     public void Handle(BuildErrorEventArgs e)
     {

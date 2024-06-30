@@ -1,8 +1,5 @@
 ﻿namespace TeamCity.MSBuild.Logger;
 
-using System;
-using Microsoft.Build.Framework;
-
 internal class ProjectStartedEventMinimumFields
 {
     private readonly ProjectFullKey _projectFullKey;

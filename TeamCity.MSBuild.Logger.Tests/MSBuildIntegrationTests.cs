@@ -1,21 +1,10 @@
 ﻿// ReSharper disable StringLiteralTypo
 namespace TeamCity.MSBuild.Logger.Tests;
 
-using System.Collections.Generic;
-using System.IO;
-using Helpers;
-using Shouldly;
-using Xunit;
-using Xunit.Abstractions;
-
 [Collection("Integration")]
 // ReSharper disable once InconsistentNaming
-public class MSBuildIntegrationTests
+public class MSBuildIntegrationTests(ITestOutputHelper testOutputHelper)
 {
-    private readonly ITestOutputHelper _testOutputHelper;
-
-    public MSBuildIntegrationTests(ITestOutputHelper testOutputHelper) => _testOutputHelper = testOutputHelper;
-
     [Theory]
     [InlineData("net452", 10, "minimal", null, false)]
     [InlineData("net452", 1, "m", null, false)]
@@ -100,5 +89,5 @@ public class MSBuildIntegrationTests
         buildWithLoggerResult.ResultShouldBe(buildResult);
     }
 
-    private void WriteLine(string message = "") => _testOutputHelper.WriteLine(message);
+    private void WriteLine(string message = "") => testOutputHelper.WriteLine(message);
 }

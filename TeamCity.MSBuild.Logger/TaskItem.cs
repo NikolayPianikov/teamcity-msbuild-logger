@@ -1,17 +1,8 @@
 ﻿namespace TeamCity.MSBuild.Logger;
 
-using System;
-using Microsoft.Build.Framework;
-
-internal readonly struct TaskItem
+internal readonly struct TaskItem(string name, ITaskItem item)
 {
-    public readonly string Name;
+    public readonly string Name = name ?? throw new ArgumentNullException(nameof(name));
 
-    public readonly ITaskItem Item;
-
-    public TaskItem(string name, ITaskItem item)
-    {
-        Name = name ?? throw new ArgumentNullException(nameof(name));
-        Item = item ?? throw new ArgumentNullException(nameof(item));
-    }
+    public readonly ITaskItem Item = item ?? throw new ArgumentNullException(nameof(item));
 }

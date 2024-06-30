@@ -1,14 +1,8 @@
 ﻿namespace TeamCity.MSBuild.Logger;
 
-using System;
-using Microsoft.Build.Framework;
-
-internal class Parameters
+internal class Parameters(IEnvironment environment)
 {
-    private readonly IEnvironment _environment;
-
-    public Parameters(IEnvironment environment) => 
-        _environment = environment ?? throw new ArgumentNullException(nameof(environment));
+    private readonly IEnvironment _environment = environment ?? throw new ArgumentNullException(nameof(environment));
 
     public bool Debug { get; set; }
 

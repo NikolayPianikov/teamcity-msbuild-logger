@@ -1,10 +1,5 @@
 ﻿namespace TeamCity.MSBuild.Logger;
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-
 // ReSharper disable once ClassNeverInstantiated.Global
 internal class Environment : IEnvironment
 {

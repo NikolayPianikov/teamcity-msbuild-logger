@@ -1,10 +1,6 @@
 ﻿namespace TeamCity.MSBuild.Logger;
 
-using System;
 using System.Diagnostics;
-using System.Threading;
-using EventHandlers;
-using Microsoft.Build.Framework;
 
 // ReSharper disable once ClassNeverInstantiated.Global
 // ReSharper disable once ClassWithVirtualMembersNeverInherited.Global

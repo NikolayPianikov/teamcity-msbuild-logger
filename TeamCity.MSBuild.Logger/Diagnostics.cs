@@ -1,8 +1,5 @@
 ﻿namespace TeamCity.MSBuild.Logger;
 
-using System;
-using System.IO;
-
 // ReSharper disable once ClassNeverInstantiated.Global
 internal class Diagnostics : IDiagnostics
 {
@@ -12,10 +9,9 @@ internal class Diagnostics : IDiagnostics
 
     public Diagnostics(IEnvironment environment)
     {
-            if (environment == null) throw new ArgumentNullException(nameof(environment));
-            _diagnosticsFile = environment.DiagnosticsFile;
-            _isEnabled = !string.IsNullOrWhiteSpace(_diagnosticsFile);
-        }
+        _diagnosticsFile = (environment ?? throw new ArgumentNullException(nameof(environment))).DiagnosticsFile;
+        _isEnabled = !string.IsNullOrWhiteSpace(_diagnosticsFile);
+    }
 
     public void Send(Func<string> diagnosticsBuilder)
     {
@@ -39,5 +35,5 @@ internal class Diagnostics : IDiagnostics
     }
 
     private static string GetPrefix() =>
-        $"{System.Threading.Thread.CurrentThread.ManagedThreadId:0000}: ";
+        $"{Thread.CurrentThread.ManagedThreadId:0000}: ";
 }

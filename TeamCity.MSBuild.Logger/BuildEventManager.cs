@@ -1,25 +1,14 @@
 ﻿namespace TeamCity.MSBuild.Logger;
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.Build.Framework;
-
 // ReSharper disable once ClassNeverInstantiated.Global
-internal class BuildEventManager: IBuildEventManager
+internal class BuildEventManager(IStringService stringService) : IBuildEventManager
 {
-    private readonly IStringService _stringService;
+    private readonly IStringService _stringService = stringService ?? throw new ArgumentNullException(nameof(stringService));
     private readonly IDictionary<string, int> _projectTargetKey = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
     private readonly IDictionary<string, int> _projectKey = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
     private readonly IDictionary<BuildEventContext, ProjectStartedEventMinimumFields> _projectStartedEvents = new Dictionary<BuildEventContext, ProjectStartedEventMinimumFields>(ComparerContextNodeId.Shared);
     private readonly IDictionary<BuildEventContext, TargetStartedEventMinimumFields> _targetStartedEvents = new Dictionary<BuildEventContext, TargetStartedEventMinimumFields>(ComparerContextNodeIdTargetId.Shared);
     private int _projectIncrementKey;
-
-    public BuildEventManager(
-        IStringService stringService)
-    {
-        _stringService = stringService ?? throw new ArgumentNullException(nameof(stringService));
-    }
 
     public void AddProjectStartedEvent(ProjectStartedEventArgs e, bool requireTimestamp)
     {
@@ -88,7 +77,7 @@ internal class BuildEventManager: IBuildEventManager
         var projectStartedEvent = GetProjectStartedEvent(e);
         if (projectStartedEvent == null)
         {
-            return Enumerable.Empty<string>();
+            return [];
         }
 
         return (

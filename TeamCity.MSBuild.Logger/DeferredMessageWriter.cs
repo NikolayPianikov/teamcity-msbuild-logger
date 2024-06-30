@@ -1,36 +1,23 @@
 namespace TeamCity.MSBuild.Logger;
 
-using System;
-using Microsoft.Build.Framework;
-
 // ReSharper disable once ClassNeverInstantiated.Global
-internal class DeferredMessageWriter: IDeferredMessageWriter
+internal class DeferredMessageWriter(
+    ILoggerContext context,
+    ILogWriter logWriter,
+    IMessageWriter messageWriter,
+    IHierarchicalMessageWriter hierarchicalMessageWriter,
+    IBuildEventManager buildEventManager,
+    IPathService pathService,
+    IStringService stringService)
+    : IDeferredMessageWriter
 {
-    private readonly IStringService _stringService;
-    private readonly IPathService _pathService;
-    private readonly IHierarchicalMessageWriter _hierarchicalMessageWriter;
-    private readonly IBuildEventManager _buildEventManager;
-    private readonly ILoggerContext _context;
-    private readonly ILogWriter _logWriter;
-    private readonly IMessageWriter _messageWriter;
-
-    public DeferredMessageWriter(
-        ILoggerContext context,
-        ILogWriter logWriter,
-        IMessageWriter messageWriter,
-        IHierarchicalMessageWriter hierarchicalMessageWriter,
-        IBuildEventManager buildEventManager,
-        IPathService pathService,
-        IStringService stringService)
-    {
-        _stringService = stringService ?? throw new ArgumentNullException(nameof(stringService));
-        _pathService = pathService ?? throw new ArgumentNullException(nameof(pathService));
-        _hierarchicalMessageWriter = hierarchicalMessageWriter ?? throw new ArgumentNullException(nameof(hierarchicalMessageWriter));
-        _buildEventManager = buildEventManager ?? throw new ArgumentNullException(nameof(buildEventManager));
-        _context = context ?? throw new ArgumentNullException(nameof(context));
-        _logWriter = logWriter ?? throw new ArgumentNullException(nameof(logWriter));
-        _messageWriter = messageWriter ?? throw new ArgumentNullException(nameof(messageWriter));
-    }
+    private readonly IStringService _stringService = stringService ?? throw new ArgumentNullException(nameof(stringService));
+    private readonly IPathService _pathService = pathService ?? throw new ArgumentNullException(nameof(pathService));
+    private readonly IHierarchicalMessageWriter _hierarchicalMessageWriter = hierarchicalMessageWriter ?? throw new ArgumentNullException(nameof(hierarchicalMessageWriter));
+    private readonly IBuildEventManager _buildEventManager = buildEventManager ?? throw new ArgumentNullException(nameof(buildEventManager));
+    private readonly ILoggerContext _context = context ?? throw new ArgumentNullException(nameof(context));
+    private readonly ILogWriter _logWriter = logWriter ?? throw new ArgumentNullException(nameof(logWriter));
+    private readonly IMessageWriter _messageWriter = messageWriter ?? throw new ArgumentNullException(nameof(messageWriter));
 
     public void ShownBuildEventContext(BuildEventContext? e)
     {

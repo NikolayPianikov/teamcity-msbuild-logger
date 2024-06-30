@@ -1,44 +1,25 @@
 ﻿namespace TeamCity.MSBuild.Logger;
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using JetBrains.TeamCity.ServiceMessages;
-using JetBrains.TeamCity.ServiceMessages.Read;
-using JetBrains.TeamCity.ServiceMessages.Write.Special;
-using Microsoft.Build.Framework;
-
 // ReSharper disable once ClassNeverInstantiated.Global
-internal class TeamCityHierarchicalMessageWriter : IHierarchicalMessageWriter, ILogWriter, IDisposable
+internal class TeamCityHierarchicalMessageWriter(
+    ILoggerContext context,
+    IColorTheme colorTheme,
+    ITeamCityWriter writer,
+    IServiceMessageParser serviceMessageParser,
+    IColorStorage colorStorage,
+    IEventContext eventContext)
+    : IHierarchicalMessageWriter, ILogWriter, IDisposable
 {
-    private readonly ILoggerContext _context;
-    private readonly IColorStorage _colorStorage;
-    private readonly IEventContext _eventContext;
+    private readonly ILoggerContext _context = context ?? throw new ArgumentNullException(nameof(context));
+    private readonly IColorStorage _colorStorage = colorStorage ?? throw new ArgumentNullException(nameof(colorStorage));
     private readonly Dictionary<int, Flow> _flows = new();
-    private readonly IColorTheme _colorTheme;
-    private readonly ITeamCityWriter _writer;
-    private readonly IServiceMessageParser _serviceMessageParser;
+    private readonly IColorTheme _colorTheme = colorTheme ?? throw new ArgumentNullException(nameof(colorTheme));
+    private readonly ITeamCityWriter _writer = writer ?? throw new ArgumentNullException(nameof(writer));
+    private readonly IServiceMessageParser _serviceMessageParser = serviceMessageParser ?? throw new ArgumentNullException(nameof(serviceMessageParser));
     private readonly Dictionary<Flow, MessageInfo> _messages = new();
-    private readonly List<string> _buildProblems = new();
+    private readonly List<string> _buildProblems = [];
 
     private static int FlowId => HierarchicalContext.Current.FlowId;
-
-    public TeamCityHierarchicalMessageWriter(
-        ILoggerContext context,
-        IColorTheme colorTheme,
-        ITeamCityWriter writer,
-        IServiceMessageParser serviceMessageParser,
-        IColorStorage colorStorage,
-        IEventContext eventContext)
-    {
-        _context = context ?? throw new ArgumentNullException(nameof(context));
-        _colorStorage = colorStorage ?? throw new ArgumentNullException(nameof(colorStorage));
-        _eventContext = eventContext;
-        _colorTheme = colorTheme ?? throw new ArgumentNullException(nameof(colorTheme));
-        _writer = writer ?? throw new ArgumentNullException(nameof(writer));
-        _serviceMessageParser = serviceMessageParser ?? throw new ArgumentNullException(nameof(serviceMessageParser));
-    }
 
     private bool TryGetFlow(int flowId, out Flow flow, bool forceCreate)
     {
@@ -52,7 +33,7 @@ internal class TeamCityHierarchicalMessageWriter : IHierarchicalMessageWriter, I
             return false;
         }
 
-        flow = new Flow(_writer, _eventContext, flowId == HierarchicalContext.DefaultFlowId);
+        flow = new Flow(_writer, eventContext, flowId == HierarchicalContext.DefaultFlowId);
         _flows.Add(FlowId, flow);
         return true;
     }

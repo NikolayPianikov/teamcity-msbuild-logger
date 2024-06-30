@@ -1,22 +1,15 @@
 ﻿// ReSharper disable NotAccessedField.Local
+// ReSharper disable UnusedMember.Local
 namespace TeamCity.MSBuild.Logger;
 
-using System;
-using JetBrains.TeamCity.ServiceMessages.Write.Special;
-
 // ReSharper disable once ClassNeverInstantiated.Global
-internal class TeamCityStatistics : IStatistics
+internal class TeamCityStatistics(
+    ILoggerContext context,
+    ITeamCityWriter writer)
+    : IStatistics
 {
-    private readonly ITeamCityWriter _writer;
-    private readonly ILoggerContext _context;
-
-    public TeamCityStatistics(
-        ILoggerContext context,
-        ITeamCityWriter writer)
-    {
-        _writer = writer ?? throw new ArgumentNullException(nameof(writer));
-        _context = context ?? throw new ArgumentNullException(nameof(context));
-    }
+    private readonly ITeamCityWriter _writer = writer ?? throw new ArgumentNullException(nameof(writer));
+    private readonly ILoggerContext _context = context ?? throw new ArgumentNullException(nameof(context));
 
     public void Publish()
     {

@@ -1,14 +1,10 @@
 ﻿namespace TeamCity.MSBuild.Logger;
 
-using System;
-using System.Diagnostics.CodeAnalysis;
-using Microsoft.Build.Framework;
-
 // ReSharper disable once ClassNeverInstantiated.Global
 internal class ParametersParser : IParametersParser
 {
-    private static readonly char[] ParameterDelimiters = { ';' };
-    private static readonly char[] ParameterValueSplitCharacter = { '=' };
+    private static readonly char[] ParameterDelimiters = [';'];
+    private static readonly char[] ParameterValueSplitCharacter = ['='];
 
     public bool TryParse(string? parametersString, Parameters parameters, out string? error)
     {

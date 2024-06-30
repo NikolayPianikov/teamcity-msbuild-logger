@@ -1,7 +1,5 @@
 ﻿namespace TeamCity.MSBuild.Logger;
 
-using System;
-
 internal class HierarchicalContext: IDisposable
 {
     public const int DefaultFlowId = 0;

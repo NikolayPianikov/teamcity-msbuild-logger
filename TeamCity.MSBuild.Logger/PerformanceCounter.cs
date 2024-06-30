@@ -1,29 +1,18 @@
 ﻿namespace TeamCity.MSBuild.Logger;
 
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using Microsoft.Build.Framework;
-
 // ReSharper disable once ClassNeverInstantiated.Global
-internal class PerformanceCounter: IPerformanceCounter
+internal class PerformanceCounter(
+    ILogWriter logWriter,
+    IPerformanceCounterFactory performanceCounterFactory,
+    IMessageWriter messageWriter)
+    : IPerformanceCounter
 {
-    private readonly IMessageWriter _messageWriter;
+    private readonly IMessageWriter _messageWriter = messageWriter ?? throw new ArgumentNullException(nameof(messageWriter));
     private readonly IDictionary<string, IPerformanceCounter>? _internalPerformanceCounters = new Dictionary<string, IPerformanceCounter>(StringComparer.OrdinalIgnoreCase);
     private Dictionary<BuildEventContext, long>? _startedEvent;
-    private readonly ILogWriter _logWriter;
-    private readonly IPerformanceCounterFactory _performanceCounterFactory;
+    private readonly ILogWriter _logWriter = logWriter ?? throw new ArgumentNullException(nameof(logWriter));
+    private readonly IPerformanceCounterFactory _performanceCounterFactory = performanceCounterFactory ?? throw new ArgumentNullException(nameof(performanceCounterFactory));
     private int _calls;
-
-    public PerformanceCounter(
-        ILogWriter logWriter,
-        IPerformanceCounterFactory performanceCounterFactory,
-        IMessageWriter messageWriter)
-    {
-        _messageWriter = messageWriter ?? throw new ArgumentNullException(nameof(messageWriter));
-        _logWriter = logWriter ?? throw new ArgumentNullException(nameof(logWriter));
-        _performanceCounterFactory = performanceCounterFactory ?? throw new ArgumentNullException(nameof(performanceCounterFactory));
-    }
 
     public string ScopeName { get; set; } = string.Empty;
 

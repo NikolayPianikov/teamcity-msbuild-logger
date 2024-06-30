@@ -1,8 +1,5 @@
 namespace TeamCity.MSBuild.Logger;
 
-using System.Collections.Generic;
-using JetBrains.TeamCity.ServiceMessages;
-
 internal class PatchedServiceMessage : IServiceMessage
 {
     private readonly IServiceMessage _message;

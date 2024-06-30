@@ -1,22 +1,9 @@
 ﻿// ReSharper disable StringLiteralTypo
 namespace TeamCity.MSBuild.Logger.Tests;
 
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Helpers;
-using Shouldly;
-using Xunit;
-using Xunit.Abstractions;
-
 [Collection("Integration")]
-public class DotnetIntegrationTests
+public class DotnetIntegrationTests(ITestOutputHelper testOutputHelper)
 {
-    private readonly ITestOutputHelper _testOutputHelper;
-
-    public DotnetIntegrationTests(ITestOutputHelper testOutputHelper) => _testOutputHelper = testOutputHelper;
-
     [Theory]
     [ClassData(typeof(TestDataGenerator))]
     public void ShouldProduceSameMessagesAsConsoleLoggerViaDotnet(
@@ -113,29 +100,29 @@ public class DotnetIntegrationTests
         }
     }
 
-    private void WriteLine(string message = "") => _testOutputHelper.WriteLine(message);
+    private void WriteLine(string message = "") => testOutputHelper.WriteLine(message);
 
     private class TestDataGenerator : IEnumerable<object?[]>
     {
         private static readonly object?[][] Cases =
-        {
-            new object?[] { "netstandard1.6", 10, "minimal", null, false },
-            new object?[] { "netstandard1.6", 1, "m", null, false },
-            new object?[] { "netstandard1.6", 1, "quiet", null, false },
-            new object?[] { "netstandard1.6", 10, "quiet", null, false },
-            new object?[] { "netstandard1.6", 1, "q", null, false },
-            new object?[] { "netstandard1.6", 10, "q", null, false },
-            new object?[] { "netstandard1.6", 10, "normal", null, false },
-            new object?[] { "netstandard1.6", 10, "normal", "TEAMcity", true },
-            new object?[] { "netstandard1.6", 10, "n", null, false },
-            new object?[] { "netstandard1.6", 10, "detailed", null, false },
-            new object?[] { "netstandard1.6", 10, "d", null, false },
-            new object?[] { "netstandard1.6", 10, "diagnostic", null, false },
-            new object?[] { "netstandard1.6", 10, "diag", null, false },
-            new object?[] { "netstandard1.6", 10, "deTailed", null, false },
-            new object?[] { "netstandard1.6", 10, "diag", "teamcity", true },
-            new object?[] { "netstandard1.6", 10, "deTailed", "teamcity", true }
-        };
+        [
+            ["netstandard1.6", 10, "minimal", null, false],
+            ["netstandard1.6", 1, "m", null, false],
+            ["netstandard1.6", 1, "quiet", null, false],
+            ["netstandard1.6", 10, "quiet", null, false],
+            ["netstandard1.6", 1, "q", null, false],
+            ["netstandard1.6", 10, "q", null, false],
+            ["netstandard1.6", 10, "normal", null, false],
+            ["netstandard1.6", 10, "normal", "TEAMcity", true],
+            ["netstandard1.6", 10, "n", null, false],
+            ["netstandard1.6", 10, "detailed", null, false],
+            ["netstandard1.6", 10, "d", null, false],
+            ["netstandard1.6", 10, "diagnostic", null, false],
+            ["netstandard1.6", 10, "diag", null, false],
+            ["netstandard1.6", 10, "deTailed", null, false],
+            ["netstandard1.6", 10, "diag", "teamcity", true],
+            ["netstandard1.6", 10, "deTailed", "teamcity", true]
+        ];
 
         // ReSharper disable once NotDisposedResourceIsReturned
         public IEnumerator<object[]> GetEnumerator() => CreateCases().GetEnumerator();

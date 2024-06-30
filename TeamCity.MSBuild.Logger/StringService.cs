@@ -1,8 +1,5 @@
 ﻿namespace TeamCity.MSBuild.Logger;
 
-using System;
-using System.Globalization;
-
 // ReSharper disable once ClassNeverInstantiated.Global
 internal class StringService : IStringService
 {

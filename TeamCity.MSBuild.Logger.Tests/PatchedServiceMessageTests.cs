@@ -1,12 +1,5 @@
 namespace TeamCity.MSBuild.Logger.Tests;
 
-using System.Linq;
-using JetBrains.TeamCity.ServiceMessages;
-using JetBrains.TeamCity.ServiceMessages.Write;
-using Moq;
-using Shouldly;
-using Xunit;
-
 public class PatchedServiceMessageTests
 {
     [Fact]
@@ -59,7 +52,7 @@ public class PatchedServiceMessageTests
         // Given
         var baseMessage = new Mock<IServiceMessage>();
         var patchedMessage = CreateInstance(baseMessage.Object);
-        baseMessage.SetupGet(i => i.Keys).Returns(Enumerable.Empty<string>());
+        baseMessage.SetupGet(i => i.Keys).Returns([]);
 
         // When
         baseMessage.SetupGet(i => i.DefaultValue).Returns("Default Val");

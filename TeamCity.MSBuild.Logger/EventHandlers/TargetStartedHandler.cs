@@ -1,24 +1,15 @@
 ﻿namespace TeamCity.MSBuild.Logger.EventHandlers;
 
-using System;
-using Microsoft.Build.Framework;
-
 // ReSharper disable once ClassNeverInstantiated.Global
-internal class TargetStartedHandler : IBuildEventHandler<TargetStartedEventArgs>
+internal class TargetStartedHandler(
+    ILoggerContext context,
+    IPerformanceCounterFactory performanceCounterFactory,
+    IBuildEventManager buildEventManager)
+    : IBuildEventHandler<TargetStartedEventArgs>
 {
-    private readonly IBuildEventManager _buildEventManager;
-    private readonly ILoggerContext _context;
-    private readonly IPerformanceCounterFactory _performanceCounterFactory;
-
-    public TargetStartedHandler(
-        ILoggerContext context,
-        IPerformanceCounterFactory performanceCounterFactory,
-        IBuildEventManager buildEventManager)
-    {
-            _buildEventManager = buildEventManager ?? throw new ArgumentNullException(nameof(buildEventManager));
-            _context = context ?? throw new ArgumentNullException(nameof(context));
-            _performanceCounterFactory = performanceCounterFactory ?? throw new ArgumentNullException(nameof(performanceCounterFactory));
-        }
+    private readonly IBuildEventManager _buildEventManager = buildEventManager ?? throw new ArgumentNullException(nameof(buildEventManager));
+    private readonly ILoggerContext _context = context ?? throw new ArgumentNullException(nameof(context));
+    private readonly IPerformanceCounterFactory _performanceCounterFactory = performanceCounterFactory ?? throw new ArgumentNullException(nameof(performanceCounterFactory));
 
     public void Handle(TargetStartedEventArgs e)
     {

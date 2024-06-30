@@ -1,16 +1,10 @@
 ﻿namespace TeamCity.MSBuild.Logger;
 
-using System;
-using System.Collections.Generic;
-
 // ReSharper disable once ClassNeverInstantiated.Global
-internal class PerformanceCounterFactory: IPerformanceCounterFactory
+internal class PerformanceCounterFactory(Func<IPerformanceCounter> performanceCounterFactory)
+    : IPerformanceCounterFactory
 {
-    private readonly Func<IPerformanceCounter> _performanceCounterFactory;
-
-    public PerformanceCounterFactory(
-        Func<IPerformanceCounter> performanceCounterFactory) =>
-        _performanceCounterFactory = performanceCounterFactory ?? throw new ArgumentNullException(nameof(performanceCounterFactory));
+    private readonly Func<IPerformanceCounter> _performanceCounterFactory = performanceCounterFactory ?? throw new ArgumentNullException(nameof(performanceCounterFactory));
 
     public IPerformanceCounter GetOrCreatePerformanceCounter(string scopeName, IDictionary<string, IPerformanceCounter> performanceCounters)
     {

@@ -1,10 +1,6 @@
 ﻿// ReSharper disable UnusedMemberInSuper.Global
 namespace TeamCity.MSBuild.Logger;
 
-using System;
-using System.Collections.Generic;
-using Microsoft.Build.Framework;
-
 internal interface IPerformanceCounter
 {
     string ScopeName { get; set; }

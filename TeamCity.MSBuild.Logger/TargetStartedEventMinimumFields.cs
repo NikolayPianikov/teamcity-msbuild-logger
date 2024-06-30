@@ -1,9 +1,5 @@
 ﻿namespace TeamCity.MSBuild.Logger;
 
-using System;
-using System.Diagnostics.CodeAnalysis;
-using Microsoft.Build.Framework;
-
 [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
 [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
 internal class TargetStartedEventMinimumFields

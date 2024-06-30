@@ -1,8 +1,5 @@
 ﻿namespace TeamCity.MSBuild.Logger;
 
-using System;
-using System.IO;
-
 // ReSharper disable once ClassNeverInstantiated.Global
 internal class DefaultLogWriter : ILogWriter
 {

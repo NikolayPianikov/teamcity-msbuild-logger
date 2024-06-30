@@ -1,44 +1,25 @@
 ﻿namespace TeamCity.MSBuild.Logger.EventHandlers;
 
-using System;
-using System.Collections;
-using System.Linq;
-using Microsoft.Build.Framework;
-using System.Collections.Generic;
-using System.Text;
-using System.Globalization;
-
 // ReSharper disable once ClassNeverInstantiated.Global
-internal class ProjectStartedHandler : IBuildEventHandler<ProjectStartedEventArgs>
+internal class ProjectStartedHandler(
+    ILoggerContext context,
+    ILogWriter logWriter,
+    IPerformanceCounterFactory performanceCounterFactory,
+    IBuildEventHandler<BuildMessageEventArgs> messageHandler,
+    IMessageWriter messageWriter,
+    IDeferredMessageWriter deferredMessageWriter,
+    IBuildEventManager buildEventManager,
+    IStringService stringService)
+    : IBuildEventHandler<ProjectStartedEventArgs>
 {
-    private readonly IStringService _stringService;
-    private readonly IBuildEventManager _buildEventManager;
-    private readonly IDeferredMessageWriter _deferredMessageWriter;
-    private readonly IMessageWriter _messageWriter;
-    private readonly ILoggerContext _context;
-    private readonly IBuildEventHandler<BuildMessageEventArgs> _messageHandler;
-    private readonly IPerformanceCounterFactory _performanceCounterFactory;
-    private readonly ILogWriter _logWriter;
-
-    public ProjectStartedHandler(
-        ILoggerContext context,
-        ILogWriter logWriter,
-        IPerformanceCounterFactory performanceCounterFactory,
-        IBuildEventHandler<BuildMessageEventArgs> messageHandler,
-        IMessageWriter messageWriter,
-        IDeferredMessageWriter deferredMessageWriter,
-        IBuildEventManager buildEventManager,
-        IStringService stringService)
-    {
-        _stringService = stringService ?? throw new ArgumentNullException(nameof(stringService));
-        _buildEventManager = buildEventManager ?? throw new ArgumentNullException(nameof(buildEventManager));
-        _deferredMessageWriter = deferredMessageWriter ?? throw new ArgumentNullException(nameof(deferredMessageWriter));
-        _messageWriter = messageWriter ?? throw new ArgumentNullException(nameof(messageWriter));
-        _context = context ?? throw new ArgumentNullException(nameof(context));
-        _messageHandler = messageHandler ?? throw new ArgumentNullException(nameof(messageHandler));
-        _performanceCounterFactory = performanceCounterFactory ?? throw new ArgumentNullException(nameof(performanceCounterFactory));
-        _logWriter = logWriter ?? throw new ArgumentNullException(nameof(logWriter));
-    }
+    private readonly IStringService _stringService = stringService ?? throw new ArgumentNullException(nameof(stringService));
+    private readonly IBuildEventManager _buildEventManager = buildEventManager ?? throw new ArgumentNullException(nameof(buildEventManager));
+    private readonly IDeferredMessageWriter _deferredMessageWriter = deferredMessageWriter ?? throw new ArgumentNullException(nameof(deferredMessageWriter));
+    private readonly IMessageWriter _messageWriter = messageWriter ?? throw new ArgumentNullException(nameof(messageWriter));
+    private readonly ILoggerContext _context = context ?? throw new ArgumentNullException(nameof(context));
+    private readonly IBuildEventHandler<BuildMessageEventArgs> _messageHandler = messageHandler ?? throw new ArgumentNullException(nameof(messageHandler));
+    private readonly IPerformanceCounterFactory _performanceCounterFactory = performanceCounterFactory ?? throw new ArgumentNullException(nameof(performanceCounterFactory));
+    private readonly ILogWriter _logWriter = logWriter ?? throw new ArgumentNullException(nameof(logWriter));
 
     public void Handle(ProjectStartedEventArgs e)
     {

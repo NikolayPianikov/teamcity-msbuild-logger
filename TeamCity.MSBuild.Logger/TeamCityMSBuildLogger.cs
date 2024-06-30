@@ -1,8 +1,6 @@
 ﻿// ReSharper disable UnusedType.Global
 namespace TeamCity.MSBuild.Logger;
 
-using Microsoft.Build.Framework;
-
 // ReSharper disable once UnusedMember.Global
 public class TeamCityMsBuildLogger : INodeLogger
 {
