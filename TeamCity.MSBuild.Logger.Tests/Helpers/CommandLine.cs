@@ -73,7 +73,6 @@ namespace TeamCity.MSBuild.Logger.Tests.Helpers
                 if (args.Data != null)
                 {
                     stdOut.Add(args.Data);
-                    //Console.Write(".");
                 }
             };
 

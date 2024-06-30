@@ -7,9 +7,8 @@ namespace TeamCity.MSBuild.Logger
     public class TeamCityMsBuildLogger : INodeLogger
     {
         private readonly Composition _composition = new();
+        private INodeLogger Logger => _composition.Logger ;
 
-        private INodeLogger Logger => _composition.Logger;
-        
         public string Parameters
         {
             get => Logger.Parameters;
@@ -21,15 +20,15 @@ namespace TeamCity.MSBuild.Logger
             get => Logger.Verbosity;
             set => Logger.Verbosity = value;
         }
-        
+
         public void Initialize(IEventSource eventSource, int nodeCount) => Logger.Initialize(eventSource, nodeCount);
 
         public void Initialize(IEventSource eventSource) => Logger.Initialize(eventSource);
 
         public void Shutdown()
         {
-            Logger.Shutdown();
             _composition.Dispose();
+            Logger.Shutdown();
         }
     }
 }

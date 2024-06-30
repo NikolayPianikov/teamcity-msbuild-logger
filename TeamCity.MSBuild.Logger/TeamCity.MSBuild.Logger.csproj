@@ -2,9 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard1.6;net452;net45</TargetFrameworks>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <LangVersion>latest</LangVersion>
-    <Nullable>disable</Nullable>
+    <LangVersion>10.0</LangVersion>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.6'">
@@ -23,7 +21,7 @@
 
   <ItemGroup>
     <PackageReference Include="JetBrains.Annotations" Version="2023.3.0" />
-    <PackageReference Include="Pure.DI" Version="2.0.34">
+    <PackageReference Include="Pure.DI" Version="2.1.24">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
