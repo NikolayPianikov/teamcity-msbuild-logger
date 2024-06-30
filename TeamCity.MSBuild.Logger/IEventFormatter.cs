@@ -1,14 +1,12 @@
-﻿namespace TeamCity.MSBuild.Logger
+﻿namespace TeamCity.MSBuild.Logger;
+
+using Microsoft.Build.Framework;
+
+internal interface IEventFormatter
 {
-    using Microsoft.Build.Framework;
-    using JetBrains.Annotations;
+    string FormatEventMessage(BuildErrorEventArgs e, bool removeCarriageReturn, bool showProjectFile);
 
-    internal interface IEventFormatter
-    {
-        [NotNull] string FormatEventMessage([NotNull] BuildErrorEventArgs e, bool removeCarriageReturn, bool showProjectFile);
+    string FormatEventMessage(BuildMessageEventArgs e, bool removeCarriageReturn, bool showProjectFile);
 
-        [NotNull] string FormatEventMessage([NotNull] BuildMessageEventArgs e, bool removeCarriageReturn, bool showProjectFile);
-
-        [NotNull] string FormatEventMessage([NotNull] BuildWarningEventArgs e, bool removeCarriageReturn, bool showProjectFile);
-    }
+    string FormatEventMessage(BuildWarningEventArgs e, bool removeCarriageReturn, bool showProjectFile);
 }

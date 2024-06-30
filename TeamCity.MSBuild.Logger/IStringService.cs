@@ -1,12 +1,9 @@
-﻿namespace TeamCity.MSBuild.Logger
+﻿namespace TeamCity.MSBuild.Logger;
+
+internal interface IStringService
 {
-    using JetBrains.Annotations;
+    string FormatResourceString(string resourceName, params object?[] args);
 
-    internal interface IStringService
-    {
-        [NotNull] string FormatResourceString([NotNull] string resourceName, [NotNull] params object[] args);
-
-        // ReSharper disable once IdentifierTypo
-        [CanBeNull] string UnescapeAll([CanBeNull] string escapedString);
-    }
+    // ReSharper disable once IdentifierTypo
+    string? UnescapeAll(string? escapedString);
 }

@@ -1,28 +1,27 @@
-﻿namespace TeamCity.MSBuild.Logger.EventHandlers
+﻿namespace TeamCity.MSBuild.Logger.EventHandlers;
+
+using System;
+using Microsoft.Build.Framework;
+
+// ReSharper disable once ClassNeverInstantiated.Global
+internal class CustomEventHandler : IBuildEventHandler<CustomBuildEventArgs>
 {
-    using System;
-    using JetBrains.Annotations;
-    using Microsoft.Build.Framework;
+    private readonly IDeferredMessageWriter _deferredMessageWriter;
+    private readonly IMessageWriter _messageWriter;
+    private readonly ILoggerContext _context;
 
-    // ReSharper disable once ClassNeverInstantiated.Global
-    internal class CustomEventHandler : IBuildEventHandler<CustomBuildEventArgs>
+    public CustomEventHandler(
+        ILoggerContext context,
+        IMessageWriter messageWriter,
+        IDeferredMessageWriter deferredMessageWriter)
     {
-        [NotNull] private readonly IDeferredMessageWriter _deferredMessageWriter;
-        [NotNull] private readonly IMessageWriter _messageWriter;
-        [NotNull] private readonly ILoggerContext _context;
-
-        public CustomEventHandler(
-            [NotNull] ILoggerContext context,
-            [NotNull] IMessageWriter messageWriter,
-            [NotNull] IDeferredMessageWriter deferredMessageWriter)
-        {
             _deferredMessageWriter = deferredMessageWriter ?? throw new ArgumentNullException(nameof(deferredMessageWriter));
             _messageWriter = messageWriter ?? throw new ArgumentNullException(nameof(messageWriter));
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public void Handle(CustomBuildEventArgs e)
-        {
+    public void Handle(CustomBuildEventArgs e)
+    {
             if (e == null) throw new ArgumentNullException(nameof(e));
             if (_context.Parameters.ShowOnlyErrors || _context.Parameters.ShowOnlyWarnings)
             {
@@ -42,5 +41,4 @@
             _messageWriter.WriteMessageAligned(e.Message, true);
             _deferredMessageWriter.ShownBuildEventContext(e.BuildEventContext);
         }
-    }
 }

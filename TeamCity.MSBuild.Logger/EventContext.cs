@@ -1,31 +1,29 @@
 // ReSharper disable ClassNeverInstantiated.Global
-namespace TeamCity.MSBuild.Logger
+namespace TeamCity.MSBuild.Logger;
+
+using System;
+using Microsoft.Build.Framework;
+
+internal class EventContext : IEventRegistry, IEventContext
 {
-    using System;
-    using JetBrains.Annotations;
-    using Microsoft.Build.Framework;
+    private BuildEventArgs? _event;
 
-    internal class EventContext : IEventRegistry, IEventContext
+    public IDisposable Register(BuildEventArgs buildEventArgs)
     {
-        [CanBeNull] private BuildEventArgs _event;
+        var prevEvent = _event;
+        _event = buildEventArgs;
+        return Disposable.Create(() => { _event = prevEvent; });
+    }
 
-        public IDisposable Register(BuildEventArgs buildEventArgs)
+    public bool TryGetEvent(out BuildEventArgs? buildEventArgs)
+    {
+        if (_event != null)
         {
-            var prevEvent = _event;
-            _event = buildEventArgs;
-            return Disposable.Create(() => { _event = prevEvent; });
+            buildEventArgs = _event;
+            return true;
         }
 
-        public bool TryGetEvent(out BuildEventArgs buildEventArgs)
-        {
-            if (_event != null)
-            {
-                buildEventArgs = _event;
-                return true;
-            }
-
-            buildEventArgs = default;
-            return false;
-        }
+        buildEventArgs = default;
+        return false;
     }
 }

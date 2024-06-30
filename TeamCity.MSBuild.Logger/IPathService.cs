@@ -1,9 +1,6 @@
-﻿namespace TeamCity.MSBuild.Logger
-{
-    using JetBrains.Annotations;
+﻿namespace TeamCity.MSBuild.Logger;
 
-    internal interface IPathService
-    {
-        [NotNull] string GetFileName([NotNull] string path);
-    }
+internal interface IPathService
+{
+    string GetFileName(string path);
 }

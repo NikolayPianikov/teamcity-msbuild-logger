@@ -1,7 +1,6 @@
-﻿namespace TeamCity.MSBuild.Logger
+﻿namespace TeamCity.MSBuild.Logger;
+
+internal interface IStatistics
 {
-    internal interface IStatistics
-    {
-        void Publish();
-    }
+    void Publish();
 }

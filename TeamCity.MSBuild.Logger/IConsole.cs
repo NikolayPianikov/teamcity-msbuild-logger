@@ -1,9 +1,6 @@
-﻿namespace TeamCity.MSBuild.Logger
-{
-    using JetBrains.Annotations;
+﻿namespace TeamCity.MSBuild.Logger;
 
-    internal interface IConsole
-    {
-        void Write([CanBeNull] string text);
-    }
+internal interface IConsole
+{
+    void Write(string? text);
 }

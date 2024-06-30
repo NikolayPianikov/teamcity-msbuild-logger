@@ -1,23 +1,22 @@
-﻿namespace TeamCity.MSBuild.Logger
+﻿namespace TeamCity.MSBuild.Logger;
+
+using System.Collections.Generic;
+using System;
+using Pure.DI;
+
+// ReSharper disable once ClassNeverInstantiated.Global
+internal class LogWriter : ILogWriter
 {
-    using System.Collections.Generic;
-    using System;
-    using JetBrains.Annotations;
-    using Pure.DI;
+    private readonly Dictionary<ColorMode, ILogWriter> _logWriters;
+    private readonly ILoggerContext _context;
 
-    // ReSharper disable once ClassNeverInstantiated.Global
-    internal class LogWriter : ILogWriter
+    public LogWriter(
+        ILoggerContext context,
+        [Tag(ColorMode.Default)] ILogWriter defaultLogWriter,
+        [Tag(ColorMode.TeamCity)] ILogWriter ansiLogWriter,
+        [Tag(ColorMode.NoColor)] ILogWriter noColorLogWriter,
+        [Tag(ColorMode.AnsiColor)] ILogWriter ansiColorLogWriter)
     {
-        [NotNull] private readonly Dictionary<ColorMode, ILogWriter> _logWriters;
-        [NotNull] private readonly ILoggerContext _context;
-
-        public LogWriter(
-            [NotNull] ILoggerContext context,
-            [NotNull][Tag(ColorMode.Default)] ILogWriter defaultLogWriter,
-            [NotNull][Tag(ColorMode.TeamCity)] ILogWriter ansiLogWriter,
-            [NotNull][Tag(ColorMode.NoColor)] ILogWriter noColorLogWriter,
-            [NotNull][Tag(ColorMode.AnsiColor)] ILogWriter ansiColorLogWriter)
-        {
             _logWriters = new Dictionary<ColorMode, ILogWriter>
             {
                 { ColorMode.Default, defaultLogWriter ?? throw new ArgumentNullException(nameof(defaultLogWriter))},
@@ -29,21 +28,20 @@
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        private ILogWriter CurrentLogWriter => _logWriters[_context.Parameters?.ColorMode ?? ColorMode.Default];
+    private ILogWriter CurrentLogWriter => _logWriters[_context.Parameters?.ColorMode ?? ColorMode.Default];
 
-        public void Write(string message, IConsole console = null)
-        {
+    public void Write(string? message, IConsole? console = null)
+    {
             CurrentLogWriter.Write(message, console);
         }
 
-        public void SetColor(Color color)
-        {
+    public void SetColor(Color color)
+    {
             CurrentLogWriter.SetColor(color);
         }
 
-        public void ResetColor()
-        {
+    public void ResetColor()
+    {
             CurrentLogWriter.ResetColor();
         }
-    }
 }

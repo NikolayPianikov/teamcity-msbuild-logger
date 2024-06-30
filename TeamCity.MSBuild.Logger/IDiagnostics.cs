@@ -1,9 +1,8 @@
-﻿namespace TeamCity.MSBuild.Logger
-{
-    using System;
+﻿namespace TeamCity.MSBuild.Logger;
 
-    internal interface IDiagnostics
-    {
-        void Send(Func<string> diagnosticsBuilder);
-    }
+using System;
+
+internal interface IDiagnostics
+{
+    void Send(Func<string> diagnosticsBuilder);
 }

@@ -1,27 +1,26 @@
-﻿namespace TeamCity.MSBuild.Logger.EventHandlers
+﻿namespace TeamCity.MSBuild.Logger.EventHandlers;
+
+using System;
+using Microsoft.Build.Framework;
+
+// ReSharper disable once ClassNeverInstantiated.Global
+internal class TaskFinishedHandler : IBuildEventHandler<TaskFinishedEventArgs>
 {
-    using System;
-    using JetBrains.Annotations;
-    using Microsoft.Build.Framework;
+    private readonly IStringService _stringService;
+    private readonly IDeferredMessageWriter _deferredMessageWriter;
+    private readonly IMessageWriter _messageWriter;
+    private readonly ILoggerContext _context;
+    private readonly ILogWriter _logWriter;
+    private readonly IPerformanceCounterFactory _performanceCounterFactory;
 
-    // ReSharper disable once ClassNeverInstantiated.Global
-    internal class TaskFinishedHandler : IBuildEventHandler<TaskFinishedEventArgs>
+    public TaskFinishedHandler(
+        ILoggerContext context,
+        ILogWriter logWriter,
+        IPerformanceCounterFactory performanceCounterFactory,
+        IMessageWriter messageWriter,
+        IDeferredMessageWriter deferredMessageWriter,
+        IStringService stringService)
     {
-        [NotNull] private readonly IStringService _stringService;
-        [NotNull] private readonly IDeferredMessageWriter _deferredMessageWriter;
-        [NotNull] private readonly IMessageWriter _messageWriter;
-        [NotNull] private readonly ILoggerContext _context;
-        [NotNull] private readonly ILogWriter _logWriter;
-        [NotNull] private readonly IPerformanceCounterFactory _performanceCounterFactory;
-
-        public TaskFinishedHandler(
-            [NotNull] ILoggerContext context,
-            [NotNull] ILogWriter logWriter,
-            [NotNull] IPerformanceCounterFactory performanceCounterFactory,
-            [NotNull] IMessageWriter messageWriter,
-            [NotNull] IDeferredMessageWriter deferredMessageWriter,
-            [NotNull] IStringService stringService)
-        {
             _stringService = stringService ?? throw new ArgumentNullException(nameof(stringService));
             _deferredMessageWriter = deferredMessageWriter ?? throw new ArgumentNullException(nameof(deferredMessageWriter));
             _messageWriter = messageWriter ?? throw new ArgumentNullException(nameof(messageWriter));
@@ -30,8 +29,8 @@
             _performanceCounterFactory = performanceCounterFactory ?? throw new ArgumentNullException(nameof(performanceCounterFactory));
         }
 
-        public void Handle(TaskFinishedEventArgs e)
-        {
+    public void Handle(TaskFinishedEventArgs e)
+    {
             if (e == null) throw new ArgumentNullException(nameof(e));
             if (e.BuildEventContext == null) throw new ArgumentException(nameof(e));
             if (_context.Parameters.ShowPerfSummary)
@@ -62,5 +61,4 @@
 
             _deferredMessageWriter.ShownBuildEventContext(e.BuildEventContext);
         }
-    }
 }

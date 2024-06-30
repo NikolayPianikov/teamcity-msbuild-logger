@@ -1,12 +1,12 @@
-﻿namespace TeamCity.MSBuild.Logger
-{
-    using System;
+﻿namespace TeamCity.MSBuild.Logger;
 
-    // ReSharper disable once ClassNeverInstantiated.Global
-    internal class DefaultColorTheme : IColorTheme
+using System;
+
+// ReSharper disable once ClassNeverInstantiated.Global
+internal class DefaultColorTheme : IColorTheme
+{
+    public ConsoleColor GetConsoleColor(Color color)
     {
-        public ConsoleColor GetConsoleColor(Color color)
-        {
             switch (color)
             {
                 case Color.BuildStage:
@@ -38,8 +38,8 @@
 
         }
 
-        public string GetAnsiColor(Color color)
-        {
+    public string GetAnsiColor(Color color)
+    {
             // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
             switch (color)
             {
@@ -67,5 +67,4 @@
                     throw new ArgumentException($"Unknown color \"{color}\"");
             }
         }
-    }
 }

@@ -1,13 +1,10 @@
 ﻿using System;
 
-namespace TeamCity.MSBuild.Logger
+namespace TeamCity.MSBuild.Logger;
+
+internal interface IColorTheme
 {
-    using JetBrains.Annotations;
+    ConsoleColor GetConsoleColor(Color color);
 
-    internal interface IColorTheme
-    {
-        ConsoleColor GetConsoleColor(Color color);
-
-        [NotNull] string GetAnsiColor(Color color);
-    }
+    string GetAnsiColor(Color color);
 }

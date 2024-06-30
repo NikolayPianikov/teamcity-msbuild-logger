@@ -1,18 +1,18 @@
-namespace TeamCity.MSBuild.Logger
+namespace TeamCity.MSBuild.Logger;
+
+using System;
+using System.Collections.Generic;
+
+internal class DescendingByElapsedTime : IComparer<IPerformanceCounter>
 {
-    using System;
-    using System.Collections.Generic;
+    public static readonly IComparer<IPerformanceCounter> Shared = new DescendingByElapsedTime();
 
-    internal class DescendingByElapsedTime : IComparer<IPerformanceCounter>
+    private DescendingByElapsedTime()
     {
-        public static readonly IComparer<IPerformanceCounter> Shared = new DescendingByElapsedTime();
-
-        private DescendingByElapsedTime()
-        {
         }
 
-        public int Compare(IPerformanceCounter x, IPerformanceCounter y)
-        {
+    public int Compare(IPerformanceCounter x, IPerformanceCounter y)
+    {
             if (x == null || y == null)
             {
                 return 0;
@@ -30,5 +30,4 @@ namespace TeamCity.MSBuild.Logger
 
             return x.ReenteredScope ? -1 : 1;
         }
-    }
 }

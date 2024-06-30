@@ -1,57 +1,55 @@
-﻿namespace TeamCity.MSBuild.Logger
+﻿namespace TeamCity.MSBuild.Logger;
+
+using System;
+using System.Collections.Generic;
+using Microsoft.Build.Framework;
+
+internal interface ILoggerContext
 {
-    using System;
-    using System.Collections.Generic;
-    using JetBrains.Annotations;
-    using Microsoft.Build.Framework;
+    DateTime BuildStarted { get; set; }
 
-    internal interface ILoggerContext
-    {
-        DateTime BuildStarted { get; set; }
+    int CurrentIndentLevel { get; }
 
-        int CurrentIndentLevel { get; }
+    IDictionary<BuildEventContext, IList<BuildMessageEventArgs>> DeferredMessages { get; }
 
-        IDictionary<BuildEventContext, IList<BuildMessageEventArgs>> DeferredMessages { [NotNull] get; }
+    int ErrorCount { get; set; }
 
-        int ErrorCount { get; set; }
+    IList<BuildErrorEventArgs>? ErrorList { get; }
 
-        IList<BuildErrorEventArgs> ErrorList { [CanBeNull] get; }
+    bool HasBuildStarted { get; set; }
 
-        bool HasBuildStarted { get; set; }
+    BuildEventContext? LastDisplayedBuildEventContext { get; set; }
 
-        [CanBeNull] BuildEventContext LastDisplayedBuildEventContext { get; set; }
+    ProjectFullKey LastProjectFullKey { get; set; }
 
-        ProjectFullKey LastProjectFullKey { get; set; }
+    int NumberOfProcessors { get; }
 
-        int NumberOfProcessors { get; }
+    Parameters Parameters { get; }
 
-        Parameters Parameters { [NotNull] get; }
+    int PrefixWidth { get; set; }
 
-        int PrefixWidth { get; set; }
+    bool SkipProjectStartedText { get; }
 
-        bool SkipProjectStartedText { get; }
+    IDictionary<string, IPerformanceCounter> ProjectPerformanceCounters { get; }
 
-        IDictionary<string, IPerformanceCounter> ProjectPerformanceCounters { [NotNull] get; }
+    IDictionary<string, IPerformanceCounter> TargetPerformanceCounters { get; }
 
-        IDictionary<string, IPerformanceCounter> TargetPerformanceCounters { [NotNull] get; }
+    IDictionary<string, IPerformanceCounter> TaskPerformanceCounters { get; }
 
-        IDictionary<string, IPerformanceCounter> TaskPerformanceCounters { [NotNull] get; }
+    LoggerVerbosity Verbosity { get; }
 
-        LoggerVerbosity Verbosity { get; }
+    int WarningCount { get; set; }
 
-        int WarningCount { get; set; }
+    IList<BuildWarningEventArgs>? WarningList { get; }
 
-        IList<BuildWarningEventArgs> WarningList { [CanBeNull] get; }
+    ProjectFullKey GetFullProjectKey(BuildEventContext? e);
 
-        [NotNull] ProjectFullKey GetFullProjectKey([CanBeNull] BuildEventContext e);
+    void Initialize(
+        int numberOfProcessors,
+        bool skipProjectStartedText,
+        Parameters parameters);
 
-        void Initialize(
-            int numberOfProcessors,
-            bool skipProjectStartedText,
-            [NotNull] Parameters parameters);
+    bool IsVerbosityAtLeast(LoggerVerbosity checkVerbosity);
 
-        bool IsVerbosityAtLeast(LoggerVerbosity checkVerbosity);
-
-        void ResetConsoleLoggerState();
-    }
+    void ResetConsoleLoggerState();
 }

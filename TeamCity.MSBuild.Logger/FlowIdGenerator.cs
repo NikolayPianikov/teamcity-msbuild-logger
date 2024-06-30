@@ -1,19 +1,19 @@
 ﻿// ReSharper disable ClassNeverInstantiated.Global
-namespace TeamCity.MSBuild.Logger
+namespace TeamCity.MSBuild.Logger;
+
+using System;
+using JetBrains.TeamCity.ServiceMessages.Write.Special;
+
+internal class FlowIdGenerator: IFlowIdGenerator
 {
-    using System;
-    using JetBrains.TeamCity.ServiceMessages.Write.Special;
+    private readonly Parameters _parameters;
+    private bool _isFirst = true;
 
-    internal class FlowIdGenerator: IFlowIdGenerator
+    public FlowIdGenerator(Parameters parameters) => 
+        _parameters = parameters;
+
+    public string NewFlowId()
     {
-        private readonly Parameters _parameters;
-        private bool _isFirst = true;
-
-        public FlowIdGenerator(Parameters parameters) => 
-            _parameters = parameters;
-
-        public string NewFlowId()
-        {
             // ReSharper disable once InvertIf
             if (_isFirst)
             {
@@ -27,5 +27,4 @@ namespace TeamCity.MSBuild.Logger
             
             return Guid.NewGuid().ToString().Replace("-", string.Empty);
         }
-    }
 }

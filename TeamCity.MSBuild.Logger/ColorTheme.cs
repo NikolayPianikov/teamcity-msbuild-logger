@@ -1,21 +1,20 @@
-﻿namespace TeamCity.MSBuild.Logger
+﻿namespace TeamCity.MSBuild.Logger;
+
+using System;
+using System.Collections.Generic;
+using Pure.DI;
+
+// ReSharper disable once ClassNeverInstantiated.Global
+internal class ColorTheme : IColorTheme
 {
-    using System;
-    using System.Collections.Generic;
-    using JetBrains.Annotations;
-    using Pure.DI;
+    private readonly Dictionary<ColorThemeMode, IColorTheme> _colorThemes;
+    private readonly ILoggerContext _context;
 
-    // ReSharper disable once ClassNeverInstantiated.Global
-    internal class ColorTheme : IColorTheme
+    public ColorTheme(
+        ILoggerContext context,
+        [Tag(ColorThemeMode.Default)] IColorTheme defaultColorTheme,
+        [Tag(ColorThemeMode.TeamCity)] IColorTheme teamCityColorTheme)
     {
-        [NotNull] private readonly Dictionary<ColorThemeMode, IColorTheme> _colorThemes;
-        [NotNull] private readonly ILoggerContext _context;
-
-        public ColorTheme(
-            [NotNull] ILoggerContext context,
-            [NotNull][Tag(ColorThemeMode.Default)] IColorTheme defaultColorTheme,
-            [NotNull][Tag(ColorThemeMode.TeamCity)] IColorTheme teamCityColorTheme)
-        {
             if (defaultColorTheme == null) throw new ArgumentNullException(nameof(defaultColorTheme));
             if (teamCityColorTheme == null) throw new ArgumentNullException(nameof(teamCityColorTheme));
             _colorThemes = new Dictionary<ColorThemeMode, IColorTheme>
@@ -27,16 +26,15 @@
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        private IColorTheme CurrentColorTheme => _colorThemes[_context.Parameters?.ColorThemeMode ?? ColorThemeMode.Default];
+    private IColorTheme CurrentColorTheme => _colorThemes[_context.Parameters?.ColorThemeMode ?? ColorThemeMode.Default];
 
-        public ConsoleColor GetConsoleColor(Color color)
-        {
+    public ConsoleColor GetConsoleColor(Color color)
+    {
             return CurrentColorTheme.GetConsoleColor(color);
         }
 
-        public string GetAnsiColor(Color color)
-        {
+    public string GetAnsiColor(Color color)
+    {
             return CurrentColorTheme.GetAnsiColor(color);
         }
-    }
 }

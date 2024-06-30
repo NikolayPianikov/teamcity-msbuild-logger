@@ -1,15 +1,14 @@
-﻿namespace TeamCity.MSBuild.Logger
-{
-    using System;
-    using System.IO;
+﻿namespace TeamCity.MSBuild.Logger;
 
-    // ReSharper disable once ClassNeverInstantiated.Global
-    internal class PathService: IPathService
+using System;
+using System.IO;
+
+// ReSharper disable once ClassNeverInstantiated.Global
+internal class PathService: IPathService
+{
+    public string GetFileName(string path)
     {
-        public string GetFileName(string path)
-        {
             if (path == null) throw new ArgumentNullException(nameof(path));
             return Path.GetFileName(path);
         }
-    }
 }

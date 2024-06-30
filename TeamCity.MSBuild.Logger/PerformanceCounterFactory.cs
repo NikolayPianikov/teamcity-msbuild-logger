@@ -1,22 +1,21 @@
-﻿namespace TeamCity.MSBuild.Logger
+﻿namespace TeamCity.MSBuild.Logger;
+
+using System;
+using System.Collections.Generic;
+
+// ReSharper disable once ClassNeverInstantiated.Global
+internal class PerformanceCounterFactory: IPerformanceCounterFactory
 {
-    using System;
-    using System.Collections.Generic;
-    using JetBrains.Annotations;
+    private readonly Func<IPerformanceCounter> _performanceCounterFactory;
 
-    // ReSharper disable once ClassNeverInstantiated.Global
-    internal class PerformanceCounterFactory: IPerformanceCounterFactory
+    public PerformanceCounterFactory(
+        Func<IPerformanceCounter> performanceCounterFactory)
     {
-        private readonly Func<IPerformanceCounter> _performanceCounterFactory;
-
-        public PerformanceCounterFactory(
-            [NotNull] Func<IPerformanceCounter> performanceCounterFactory)
-        {
             _performanceCounterFactory = performanceCounterFactory ?? throw new ArgumentNullException(nameof(performanceCounterFactory));
         }
 
-        public IPerformanceCounter GetOrCreatePerformanceCounter(string scopeName, IDictionary<string, IPerformanceCounter> performanceCounters)
-        {
+    public IPerformanceCounter GetOrCreatePerformanceCounter(string scopeName, IDictionary<string, IPerformanceCounter> performanceCounters)
+    {
             if (scopeName == null) throw new ArgumentNullException(nameof(scopeName));
             if (performanceCounters.TryGetValue(scopeName, out var performanceCounter))
             {
@@ -29,5 +28,4 @@
 
             return performanceCounter;
         }
-    }
 }

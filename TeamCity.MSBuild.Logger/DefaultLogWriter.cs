@@ -1,21 +1,20 @@
-﻿namespace TeamCity.MSBuild.Logger
+﻿namespace TeamCity.MSBuild.Logger;
+
+using System;
+using System.IO;
+
+// ReSharper disable once ClassNeverInstantiated.Global
+internal class DefaultLogWriter : ILogWriter
 {
-    using System;
-    using System.IO;
-    using JetBrains.Annotations;
+    private readonly IColorTheme _colorTheme;
+    private readonly IConsole _defaultConsole;
+    private static bool _supportReadingBackgroundColor = true;
+    private readonly bool _hasBackgroundColor;
 
-    // ReSharper disable once ClassNeverInstantiated.Global
-    internal class DefaultLogWriter : ILogWriter
+    public DefaultLogWriter(
+        IConsole defaultConsole,
+        IColorTheme colorTheme)
     {
-        [NotNull] private readonly IColorTheme _colorTheme;
-        [NotNull] private readonly IConsole _defaultConsole;
-        private static bool _supportReadingBackgroundColor = true;
-        private readonly bool _hasBackgroundColor;
-
-        public DefaultLogWriter(
-            [NotNull] IConsole defaultConsole,
-            [NotNull] IColorTheme colorTheme)
-        {
             _colorTheme = colorTheme ?? throw new ArgumentNullException(nameof(colorTheme));
             _defaultConsole = defaultConsole ?? throw new ArgumentNullException(nameof(defaultConsole));
             _hasBackgroundColor = true;
@@ -30,10 +29,10 @@
             }
         }
 
-        private static ConsoleColor BackgroundColor
+    private static ConsoleColor BackgroundColor
+    {
+        get
         {
-            get
-            {
                 // ReSharper disable once InvertIf
                 if (_supportReadingBackgroundColor)
                 {
@@ -49,10 +48,10 @@
 
                 return ConsoleColor.Black;
             }
-        }
+    }
 
-        public void Write(string message, IConsole console = null)
-        {
+    public void Write(string? message, IConsole? console = null)
+    {
             if (string.IsNullOrEmpty(message))
             {
                 return;
@@ -61,8 +60,8 @@
             (console ?? _defaultConsole).Write(message);
         }
 
-        public void SetColor(Color color)
-        {
+    public void SetColor(Color color)
+    {
             if (!_hasBackgroundColor)
             {
                 return;
@@ -77,8 +76,8 @@
             }
         }
 
-        public void ResetColor()
-        {
+    public void ResetColor()
+    {
             if (!_hasBackgroundColor)
             {
                 return;
@@ -93,8 +92,8 @@
             }
         }
 
-        private static ConsoleColor TransformColor(ConsoleColor foreground, ConsoleColor background)
-        {
+    private static ConsoleColor TransformColor(ConsoleColor foreground, ConsoleColor background)
+    {
             var consoleColor = foreground;
             if (foreground == background)
             {
@@ -103,5 +102,4 @@
 
             return consoleColor;
         }
-    }
 }

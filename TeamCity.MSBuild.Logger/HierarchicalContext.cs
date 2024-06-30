@@ -1,31 +1,28 @@
-﻿namespace TeamCity.MSBuild.Logger
+﻿namespace TeamCity.MSBuild.Logger;
+
+using System;
+
+internal class HierarchicalContext: IDisposable
 {
-    using System;
-    using JetBrains.Annotations;
+    public const int DefaultFlowId = 0;
+    private static readonly HierarchicalContext Default = new(0);
 
-    internal class HierarchicalContext: IDisposable
+    [ThreadStatic] private static HierarchicalContext? _currentHierarchicalContext;
+    private readonly HierarchicalContext? _prevHierarchicalContext;
+
+    public HierarchicalContext(int? flowId)
     {
-        public const int DefaultFlowId = 0;
-        private static readonly HierarchicalContext Default = new HierarchicalContext(0);
+        FlowId = flowId ?? DefaultFlowId;
+        _prevHierarchicalContext = _currentHierarchicalContext;
+        _currentHierarchicalContext = this;
+    }
 
-        [CanBeNull][ThreadStatic] private static HierarchicalContext _currentHierarchicalContext;
-        private readonly HierarchicalContext _prevHierarchicalContext;
+    public static HierarchicalContext Current => _currentHierarchicalContext ?? Default;
 
-        public HierarchicalContext([CanBeNull] int? flowId)
-        {
-            FlowId = flowId ?? DefaultFlowId;
-            _prevHierarchicalContext = _currentHierarchicalContext;
-            _currentHierarchicalContext = this;
-        }
+    public int FlowId { get; }
 
-        [NotNull]
-        public static HierarchicalContext Current => _currentHierarchicalContext ?? Default;
-
-        public int FlowId { get; }
-
-        public void Dispose()
-        {
-            _currentHierarchicalContext = _prevHierarchicalContext;
-        }
+    public void Dispose()
+    {
+        _currentHierarchicalContext = _prevHierarchicalContext;
     }
 }

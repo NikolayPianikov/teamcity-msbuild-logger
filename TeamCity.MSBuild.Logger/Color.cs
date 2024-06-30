@@ -1,31 +1,30 @@
-﻿namespace TeamCity.MSBuild.Logger
+﻿namespace TeamCity.MSBuild.Logger;
+
+internal enum Color
 {
-    internal enum Color
-    {
-        BuildStage,
+    BuildStage,
 
-        Success,
+    Success,
 
-        Warning,
+    Warning,
 
-        WarningSummary,
+    WarningSummary,
 
-        Error,
+    Error,
 
-        ErrorSummary,
+    ErrorSummary,
 
-        Details,
+    Details,
 
-        Task,
+    Task,
 
-        SummaryHeader,
+    SummaryHeader,
 
-        SummaryInfo,
+    SummaryInfo,
 
-        PerformanceHeader,
+    PerformanceHeader,
 
-        PerformanceCounterInfo,
+    PerformanceCounterInfo,
 
-        Items
-    }
+    Items
 }

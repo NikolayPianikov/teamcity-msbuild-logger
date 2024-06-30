@@ -1,30 +1,28 @@
 ﻿// ReSharper disable All
-namespace TeamCity.MSBuild.Logger.Tests.Helpers
-{
-    using System;
-    using System.Collections.Generic;
-    using JetBrains.Annotations;
+namespace TeamCity.MSBuild.Logger.Tests.Helpers;
 
-    public class CommandLineResult
+using System;
+using System.Collections.Generic;
+    
+public class CommandLineResult
+{
+    public CommandLineResult(
+        CommandLine commandLine,
+        int exitCode,
+        IList<string> stdOut,
+        IList<string> stdError)
     {
-        public CommandLineResult(
-            [NotNull] CommandLine commandLine,
-            int exitCode,
-            [NotNull] IList<string> stdOut,
-            [NotNull] IList<string> stdError)
-        {
             CommandLine = commandLine ?? throw new ArgumentNullException(nameof(commandLine));
             ExitCode = exitCode;
             StdOut = stdOut ?? throw new ArgumentNullException(nameof(stdOut));
             StdError = stdError ?? throw new ArgumentNullException(nameof(stdError));
         }
 
-        public CommandLine CommandLine { [NotNull] get; }
+    public CommandLine CommandLine { get; }
 
-        public int ExitCode { get; }
+    public int ExitCode { get; }
 
-        public IEnumerable<string> StdOut { [NotNull] get; }
+    public IEnumerable<string> StdOut { get; }
 
-        public IEnumerable<string> StdError { [NotNull] get; }
-    }
+    public IEnumerable<string> StdError { get; }
 }

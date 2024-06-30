@@ -1,9 +1,8 @@
-﻿namespace TeamCity.MSBuild.Logger
-{
-    internal enum ColorThemeMode
-    {
-        Default = 1,
+﻿namespace TeamCity.MSBuild.Logger;
 
-        TeamCity = 2
-    }
+internal enum ColorThemeMode
+{
+    Default = 1,
+
+    TeamCity = 2
 }

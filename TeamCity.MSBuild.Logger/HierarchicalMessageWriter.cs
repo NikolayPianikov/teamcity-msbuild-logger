@@ -1,21 +1,20 @@
-﻿namespace TeamCity.MSBuild.Logger
+﻿namespace TeamCity.MSBuild.Logger;
+
+using System;
+using System.Collections.Generic;
+using Pure.DI;
+
+// ReSharper disable once ClassNeverInstantiated.Global
+internal class HierarchicalMessageWriter : IHierarchicalMessageWriter
 {
-    using System;
-    using System.Collections.Generic;
-    using JetBrains.Annotations;
-    using Pure.DI;
+    private readonly Dictionary<TeamCityMode, IHierarchicalMessageWriter> _hierarchicalMessageWriter;
+    private readonly ILoggerContext _context;
 
-    // ReSharper disable once ClassNeverInstantiated.Global
-    internal class HierarchicalMessageWriter : IHierarchicalMessageWriter
+    public HierarchicalMessageWriter(
+        ILoggerContext context,
+        [Tag(TeamCityMode.Off)] IHierarchicalMessageWriter defaultHierarchicalMessageWriter,
+        [Tag(TeamCityMode.SupportHierarchy)] IHierarchicalMessageWriter teamcityHierarchicalMessageWriter)
     {
-        [NotNull] private readonly Dictionary<TeamCityMode, IHierarchicalMessageWriter> _hierarchicalMessageWriter;
-        [NotNull] private readonly ILoggerContext _context;
-
-        public HierarchicalMessageWriter(
-            [NotNull] ILoggerContext context,
-            [NotNull][Tag(TeamCityMode.Off)] IHierarchicalMessageWriter defaultHierarchicalMessageWriter,
-            [NotNull][Tag(TeamCityMode.SupportHierarchy)] IHierarchicalMessageWriter teamcityHierarchicalMessageWriter)
-        {
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _hierarchicalMessageWriter = new Dictionary<TeamCityMode, IHierarchicalMessageWriter>
             {
@@ -24,17 +23,16 @@
             };
         }
 
-        private IHierarchicalMessageWriter CurrentHierarchicalMessageWriter => _hierarchicalMessageWriter[_context.Parameters?.TeamCityMode ?? TeamCityMode.Off];
+    private IHierarchicalMessageWriter CurrentHierarchicalMessageWriter => _hierarchicalMessageWriter[_context.Parameters?.TeamCityMode ?? TeamCityMode.Off];
 
-        public void StartBlock(string name)
-        {
+    public void StartBlock(string name)
+    {
             if (name == null) throw new ArgumentNullException(nameof(name));
             CurrentHierarchicalMessageWriter.StartBlock(name);
         }
 
-        public void FinishBlock()
-        {
+    public void FinishBlock()
+    {
             CurrentHierarchicalMessageWriter.FinishBlock();
         }
-    }
 }

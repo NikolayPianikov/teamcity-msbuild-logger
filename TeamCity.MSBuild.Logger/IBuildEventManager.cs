@@ -1,27 +1,25 @@
-﻿namespace TeamCity.MSBuild.Logger
+﻿namespace TeamCity.MSBuild.Logger;
+
+using System.Collections.Generic;
+using Microsoft.Build.Framework;
+
+internal interface IBuildEventManager
 {
-    using System.Collections.Generic;
-    using Microsoft.Build.Framework;
-    using JetBrains.Annotations;
+    void AddProjectStartedEvent(ProjectStartedEventArgs e, bool requireTimestamp);
 
-    internal interface IBuildEventManager
-    {
-        void AddProjectStartedEvent([NotNull] ProjectStartedEventArgs e, bool requireTimestamp);
+    void AddTargetStartedEvent(TargetStartedEventArgs e, bool requireTimeStamp);
 
-        void AddTargetStartedEvent([NotNull] TargetStartedEventArgs e, bool requireTimeStamp);
+    ProjectStartedEventMinimumFields? GetProjectStartedEvent(BuildEventContext e);
 
-        [CanBeNull] ProjectStartedEventMinimumFields GetProjectStartedEvent([NotNull] BuildEventContext e);
+    TargetStartedEventMinimumFields? GetTargetStartedEvent(BuildEventContext e);
 
-        [CanBeNull] TargetStartedEventMinimumFields GetTargetStartedEvent([NotNull] BuildEventContext e);
+    IEnumerable<string> ProjectCallStackFromProject(BuildEventContext e);
 
-        [NotNull] IEnumerable<string> ProjectCallStackFromProject([NotNull] BuildEventContext e);
+    void RemoveProjectStartedEvent(BuildEventContext e);
 
-        void RemoveProjectStartedEvent([NotNull] BuildEventContext e);
+    void RemoveTargetStartedEvent(BuildEventContext e);
 
-        void RemoveTargetStartedEvent([NotNull] BuildEventContext e);
+    void SetErrorWarningFlagOnCallStack(BuildEventContext e);
 
-        void SetErrorWarningFlagOnCallStack([NotNull] BuildEventContext e);
-
-        void Reset();
-    }
+    void Reset();
 }

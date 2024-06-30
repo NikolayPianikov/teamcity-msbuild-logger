@@ -1,25 +1,23 @@
 ﻿// ReSharper disable UnusedMemberInSuper.Global
-namespace TeamCity.MSBuild.Logger
+namespace TeamCity.MSBuild.Logger;
+
+using System;
+using System.Collections.Generic;
+using Microsoft.Build.Framework;
+
+internal interface IPerformanceCounter
 {
-    using System;
-    using System.Collections.Generic;
-    using JetBrains.Annotations;
-    using Microsoft.Build.Framework;
+    string ScopeName { get; set; }
 
-    internal interface IPerformanceCounter
-    {
-        string ScopeName { get; set; }
+    TimeSpan ElapsedTime { get; }
 
-        TimeSpan ElapsedTime { get; }
+    bool ReenteredScope { get; }
 
-        bool ReenteredScope { get; }
+    int MessageIdentLevel { set; }
 
-        int MessageIdentLevel { set; }
+    void AddEventFinished(string? projectTargetNames, BuildEventContext buildEventContext, DateTime eventTimeStamp);
 
-        void AddEventFinished(string projectTargetNames, BuildEventContext buildEventContext, DateTime eventTimeStamp);
+    void AddEventStarted(string? projectTargetNames, BuildEventContext buildEventContext, DateTime eventTimeStamp, IEqualityComparer<BuildEventContext>? comparer);
 
-        void AddEventStarted([CanBeNull] string projectTargetNames, BuildEventContext buildEventContext, DateTime eventTimeStamp, [CanBeNull] IEqualityComparer<BuildEventContext> comparer);
-
-        void PrintCounterMessage();
-    }
+    void PrintCounterMessage();
 }

@@ -1,9 +1,8 @@
-namespace TeamCity.MSBuild.Logger
-{
-    using Microsoft.Build.Framework;
+namespace TeamCity.MSBuild.Logger;
 
-    internal interface IEventContext
-    {
-        bool TryGetEvent(out BuildEventArgs buildEventArgs);
-    }
+using Microsoft.Build.Framework;
+
+internal interface IEventContext
+{
+    bool TryGetEvent(out BuildEventArgs? buildEventArgs);
 }

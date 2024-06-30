@@ -1,13 +1,12 @@
-﻿namespace TeamCity.MSBuild.Logger
+﻿namespace TeamCity.MSBuild.Logger;
+
+internal enum ColorMode
 {
-    internal enum ColorMode
-    {
-        Default = 1,
+    Default = 1,
 
-        TeamCity = 2,
+    TeamCity = 2,
 
-        NoColor = 3,
+    NoColor = 3,
 
-        AnsiColor = 4
-    }
+    AnsiColor = 4
 }

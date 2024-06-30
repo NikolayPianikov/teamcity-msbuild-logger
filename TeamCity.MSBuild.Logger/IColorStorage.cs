@@ -1,11 +1,10 @@
-﻿namespace TeamCity.MSBuild.Logger
+﻿namespace TeamCity.MSBuild.Logger;
+
+internal interface IColorStorage
 {
-    internal interface IColorStorage
-    {
-        Color? Color { get;}
+    Color? Color { get;}
 
-        void SetColor(Color color);
+    void SetColor(Color color);
 
-        void ResetColor();
-    }
+    void ResetColor();
 }

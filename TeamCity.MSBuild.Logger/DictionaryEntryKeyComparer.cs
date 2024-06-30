@@ -1,16 +1,15 @@
-namespace TeamCity.MSBuild.Logger
+namespace TeamCity.MSBuild.Logger;
+
+using System;
+using System.Collections.Generic;
+
+internal class DictionaryEntryKeyComparer : IComparer<Property>
 {
-    using System;
-    using System.Collections.Generic;
+    public static readonly IComparer<Property> Shared = new DictionaryEntryKeyComparer();
 
-    internal class DictionaryEntryKeyComparer : IComparer<Property>
+    private DictionaryEntryKeyComparer()
     {
-        public static readonly IComparer<Property> Shared = new DictionaryEntryKeyComparer();
-
-        private DictionaryEntryKeyComparer()
-        {
         }
 
-        public int Compare(Property x, Property y) => string.Compare(x.Name, y.Name, StringComparison.CurrentCultureIgnoreCase);
-    }
+    public int Compare(Property x, Property y) => string.Compare(x.Name, y.Name, StringComparison.CurrentCultureIgnoreCase);
 }

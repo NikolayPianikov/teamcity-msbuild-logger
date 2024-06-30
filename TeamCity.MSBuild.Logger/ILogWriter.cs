@@ -1,13 +1,10 @@
-﻿namespace TeamCity.MSBuild.Logger
+﻿namespace TeamCity.MSBuild.Logger;
+
+internal interface ILogWriter
 {
-    using JetBrains.Annotations;
+    void Write(string? message, IConsole? console = null);
 
-    internal interface ILogWriter
-    {
-        void Write([CanBeNull] string message, [CanBeNull] IConsole console = null);
+    void SetColor(Color color);
 
-        void SetColor(Color color);
-
-        void ResetColor();
-    }
+    void ResetColor();
 }

@@ -1,9 +1,6 @@
-﻿namespace TeamCity.MSBuild.Logger
-{
-    using JetBrains.Annotations;
+﻿namespace TeamCity.MSBuild.Logger;
 
-    internal interface IParametersParser
-    {
-        bool TryParse([CanBeNull] string parametersString, [NotNull] Parameters parameters, out string error);
-    }
+internal interface IParametersParser
+{
+    bool TryParse(string? parametersString, Parameters parameters, out string? error);
 }

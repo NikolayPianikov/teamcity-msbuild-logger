@@ -1,27 +1,26 @@
-﻿namespace TeamCity.MSBuild.Logger
+﻿namespace TeamCity.MSBuild.Logger;
+
+using System;
+using Pure.DI;
+
+// ReSharper disable once ClassNeverInstantiated.Global
+internal class TeamCityColorTheme : IColorTheme
 {
-    using System;
-    using JetBrains.Annotations;
-    using Pure.DI;
+    private readonly IColorTheme _defaultColorTheme;
 
-    // ReSharper disable once ClassNeverInstantiated.Global
-    internal class TeamCityColorTheme : IColorTheme
+    public TeamCityColorTheme(
+        [Tag(ColorThemeMode.Default)] IColorTheme defaultColorTheme)
     {
-        [NotNull] private readonly IColorTheme _defaultColorTheme;
-
-        public TeamCityColorTheme(
-            [NotNull][Tag(ColorThemeMode.Default)] IColorTheme defaultColorTheme)
-        {
             _defaultColorTheme = defaultColorTheme ?? throw new ArgumentNullException(nameof(defaultColorTheme));
         }
 
-        public ConsoleColor GetConsoleColor(Color color)
-        {
+    public ConsoleColor GetConsoleColor(Color color)
+    {
             return _defaultColorTheme.GetConsoleColor(color);
         }
 
-        public string GetAnsiColor(Color color)
-        {
+    public string GetAnsiColor(Color color)
+    {
             // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
             switch (color)
             {
@@ -36,5 +35,4 @@
                     return _defaultColorTheme.GetAnsiColor(color);
             }
         }
-    }
 }

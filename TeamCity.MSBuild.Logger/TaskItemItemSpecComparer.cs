@@ -1,19 +1,19 @@
-namespace TeamCity.MSBuild.Logger
+namespace TeamCity.MSBuild.Logger;
+
+using System;
+using System.Collections.Generic;
+using Microsoft.Build.Framework;
+
+internal class TaskItemItemSpecComparer : IComparer<ITaskItem>
 {
-    using System;
-    using System.Collections.Generic;
-    using Microsoft.Build.Framework;
+    public static readonly IComparer<ITaskItem> Shared = new TaskItemItemSpecComparer();
 
-    internal class TaskItemItemSpecComparer : IComparer<ITaskItem>
+    private TaskItemItemSpecComparer()
     {
-        public static readonly IComparer<ITaskItem> Shared = new TaskItemItemSpecComparer();
-
-        private TaskItemItemSpecComparer()
-        {
         }
 
-        public int Compare(ITaskItem x, ITaskItem y)
-        {
+    public int Compare(ITaskItem x, ITaskItem y)
+    {
             if (x == null || y == null)
             {
                 return 0;
@@ -21,5 +21,4 @@ namespace TeamCity.MSBuild.Logger
 
             return string.Compare(x.ItemSpec, y.ItemSpec, StringComparison.CurrentCultureIgnoreCase);
         }
-    }
 }

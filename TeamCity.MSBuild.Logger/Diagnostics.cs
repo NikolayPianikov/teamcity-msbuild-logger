@@ -1,25 +1,24 @@
-﻿namespace TeamCity.MSBuild.Logger
+﻿namespace TeamCity.MSBuild.Logger;
+
+using System;
+using System.IO;
+
+// ReSharper disable once ClassNeverInstantiated.Global
+internal class Diagnostics : IDiagnostics
 {
-    using System;
-    using System.IO;
-    using JetBrains.Annotations;
+    private readonly bool _isEnabled;
+    private readonly string _diagnosticsFile;
+    private readonly object _lockObject = new();        
 
-    // ReSharper disable once ClassNeverInstantiated.Global
-    internal class Diagnostics : IDiagnostics
+    public Diagnostics(IEnvironment environment)
     {
-        private readonly bool _isEnabled;
-        [NotNull] private readonly string _diagnosticsFile;
-        [NotNull] private readonly object _lockObject = new object();        
-
-        public Diagnostics([NotNull] IEnvironment environment)
-        {
             if (environment == null) throw new ArgumentNullException(nameof(environment));
             _diagnosticsFile = environment.DiagnosticsFile;
             _isEnabled = !string.IsNullOrWhiteSpace(_diagnosticsFile);
         }
 
-        public void Send(Func<string> diagnosticsBuilder)
-        {
+    public void Send(Func<string> diagnosticsBuilder)
+    {
             if (!_isEnabled)
             {
                 return;                
@@ -39,6 +38,5 @@
             }
         }
 
-        private static string GetPrefix() => $"{System.Threading.Thread.CurrentThread.ManagedThreadId:0000}: ";
-    }
+    private static string GetPrefix() => $"{System.Threading.Thread.CurrentThread.ManagedThreadId:0000}: ";
 }

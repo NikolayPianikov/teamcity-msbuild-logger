@@ -1,18 +1,18 @@
-namespace TeamCity.MSBuild.Logger
+namespace TeamCity.MSBuild.Logger;
+
+using JetBrains.TeamCity.ServiceMessages;
+using JetBrains.TeamCity.ServiceMessages.Write.Special;
+using Microsoft.Build.Framework;
+
+internal class BuildErrorMessageUpdater: IServiceMessageUpdater
 {
-    using JetBrains.TeamCity.ServiceMessages;
-    using JetBrains.TeamCity.ServiceMessages.Write.Special;
-    using Microsoft.Build.Framework;
+    private readonly IEventContext _eventContext;
 
-    internal class BuildErrorMessageUpdater: IServiceMessageUpdater
+    public BuildErrorMessageUpdater(IEventContext eventContext) => 
+        _eventContext = eventContext;
+
+    public IServiceMessage UpdateServiceMessage(IServiceMessage message)
     {
-        private readonly IEventContext _eventContext;
-
-        public BuildErrorMessageUpdater(IEventContext eventContext) => 
-            _eventContext = eventContext;
-
-        public IServiceMessage UpdateServiceMessage(IServiceMessage message)
-        {
             if (_eventContext.TryGetEvent(out var buildEventManager)
                 && buildEventManager is BuildErrorEventArgs error)
             {
@@ -51,5 +51,4 @@ namespace TeamCity.MSBuild.Logger
 
             return message;
         }
-    }
 }

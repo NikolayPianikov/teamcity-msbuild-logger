@@ -1,11 +1,8 @@
-﻿namespace TeamCity.MSBuild.Logger
+﻿namespace TeamCity.MSBuild.Logger;
+
+internal interface IHierarchicalMessageWriter
 {
-    using JetBrains.Annotations;
+    void StartBlock(string name);
 
-    internal interface IHierarchicalMessageWriter
-    {
-        void StartBlock([NotNull] string name);
-
-        void FinishBlock();
-    }
+    void FinishBlock();
 }

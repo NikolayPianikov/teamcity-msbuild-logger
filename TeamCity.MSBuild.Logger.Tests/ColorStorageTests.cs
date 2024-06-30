@@ -1,13 +1,13 @@
-﻿namespace TeamCity.MSBuild.Logger.Tests
-{
-    using Shouldly;
-    using Xunit;
+﻿namespace TeamCity.MSBuild.Logger.Tests;
 
-    public class ColorStorageTests
+using Shouldly;
+using Xunit;
+
+public class ColorStorageTests
+{
+    [Fact]
+    public void ShouldReturnNullColorByDefault()
     {
-        [Fact]
-        public void ShouldReturnNullColorByDefault()
-        {
             // Given
             var storage = new ColorStorage();
 
@@ -17,9 +17,9 @@
             storage.Color.ShouldBe(default);
         }
 
-        [Fact]
-        public void ShouldStoreColor()
-        {
+    [Fact]
+    public void ShouldStoreColor()
+    {
             // Given
             var storage = new ColorStorage();
 
@@ -30,9 +30,9 @@
             storage.Color.ShouldBe(Color.Error);
         }
 
-        [Fact]
-        public void ShouldResetColor()
-        {
+    [Fact]
+    public void ShouldResetColor()
+    {
             // Given
             var storage = new ColorStorage();
 
@@ -45,9 +45,9 @@
             storage.Color.ShouldBe(default);
         }
 
-        [Fact]
-        public void ShouldResetToNullWhenLastReset()
-        {
+    [Fact]
+    public void ShouldResetToNullWhenLastReset()
+    {
             // Given
             var storage = new ColorStorage();
 
@@ -59,9 +59,9 @@
             storage.Color.ShouldBe(default);
         }
 
-        [Fact]
-        public void ShouldResetToNullWhenTooManyReset()
-        {
+    [Fact]
+    public void ShouldResetToNullWhenTooManyReset()
+    {
             // Given
             var storage = new ColorStorage();
 
@@ -75,5 +75,4 @@
             // Then
             storage.Color.ShouldBe(default);
         }
-    }
 }

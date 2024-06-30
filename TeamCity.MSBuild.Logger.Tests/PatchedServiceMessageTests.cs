@@ -1,17 +1,17 @@
-namespace TeamCity.MSBuild.Logger.Tests
-{
-    using System.Linq;
-    using JetBrains.TeamCity.ServiceMessages;
-    using JetBrains.TeamCity.ServiceMessages.Write;
-    using Moq;
-    using Shouldly;
-    using Xunit;
+namespace TeamCity.MSBuild.Logger.Tests;
 
-    public class PatchedServiceMessageTests
+using System.Linq;
+using JetBrains.TeamCity.ServiceMessages;
+using JetBrains.TeamCity.ServiceMessages.Write;
+using Moq;
+using Shouldly;
+using Xunit;
+
+public class PatchedServiceMessageTests
+{
+    [Fact]
+    public void ShouldUpdateValue()
     {
-        [Fact]
-        public void ShouldUpdateValue()
-        {
             // Given
             var baseMessage = new ServiceMessage("Abc")
             {
@@ -30,9 +30,9 @@ namespace TeamCity.MSBuild.Logger.Tests
             patchedMessage.Keys.ShouldContain("Name1");
         }
         
-        [Fact]
-        public void ShouldAddValue()
-        {
+    [Fact]
+    public void ShouldAddValue()
+    {
             // Given
             var baseMessage = new ServiceMessage("Abc")
             {
@@ -53,9 +53,9 @@ namespace TeamCity.MSBuild.Logger.Tests
             patchedMessage.Keys.ShouldContain("Name2");
         }
         
-        [Fact]
-        public void ShouldCopyDefaultValue()
-        {
+    [Fact]
+    public void ShouldCopyDefaultValue()
+    {
             // Given
             var baseMessage = new Mock<IServiceMessage>();
             var patchedMessage = CreateInstance(baseMessage.Object);
@@ -68,7 +68,6 @@ namespace TeamCity.MSBuild.Logger.Tests
             patchedMessage.DefaultValue.ShouldBe("Default Val");
         }
 
-        private static PatchedServiceMessage CreateInstance(IServiceMessage baseMessage) =>
-            new PatchedServiceMessage(baseMessage);
-    }
+    private static PatchedServiceMessage CreateInstance(IServiceMessage baseMessage) =>
+        new PatchedServiceMessage(baseMessage);
 }

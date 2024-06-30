@@ -1,11 +1,8 @@
-﻿namespace TeamCity.MSBuild.Logger
-{
-    using System.Collections.Generic;
-    using JetBrains.Annotations;
+﻿namespace TeamCity.MSBuild.Logger;
 
-    internal interface IPerformanceCounterFactory
-    {
-        [NotNull]
-        IPerformanceCounter GetOrCreatePerformanceCounter([NotNull] string scopeName, IDictionary<string, IPerformanceCounter> performanceCounters);
-    }
+using System.Collections.Generic;
+
+internal interface IPerformanceCounterFactory
+{
+    IPerformanceCounter GetOrCreatePerformanceCounter(string scopeName, IDictionary<string, IPerformanceCounter> performanceCounters);
 }

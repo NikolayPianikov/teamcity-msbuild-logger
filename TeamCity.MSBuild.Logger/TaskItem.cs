@@ -1,19 +1,17 @@
-﻿namespace TeamCity.MSBuild.Logger
+﻿namespace TeamCity.MSBuild.Logger;
+
+using System;
+using Microsoft.Build.Framework;
+
+internal readonly struct TaskItem
 {
-    using System;
-    using JetBrains.Annotations;
-    using Microsoft.Build.Framework;
+    public readonly string Name;
 
-    internal readonly struct TaskItem
+    public readonly ITaskItem Item;
+
+    public TaskItem(string name, ITaskItem item)
     {
-        public readonly string Name;
-
-        public readonly ITaskItem Item;
-
-        public TaskItem([NotNull] string name, [NotNull] ITaskItem item)
-        {
             Name = name ?? throw new ArgumentNullException(nameof(name));
             Item = item ?? throw new ArgumentNullException(nameof(item));
         }
-    }
 }

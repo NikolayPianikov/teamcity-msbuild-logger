@@ -1,17 +1,17 @@
-﻿namespace TeamCity.MSBuild.Logger
-{
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Linq;
+﻿namespace TeamCity.MSBuild.Logger;
 
-    // ReSharper disable once ClassNeverInstantiated.Global
-    internal class Environment : IEnvironment
-    {
-        private static readonly Dictionary<string, string> Envs = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+
+// ReSharper disable once ClassNeverInstantiated.Global
+internal class Environment : IEnvironment
+{
+    private static readonly Dictionary<string, string> Envs = new(StringComparer.OrdinalIgnoreCase);
         
-        static Environment()
-        {
+    static Environment()
+    {
             foreach (var entry in System.Environment.GetEnvironmentVariables().OfType<DictionaryEntry>())
             {
                 var key = entry.Key?.ToString()?.Trim() ?? string.Empty;
@@ -20,10 +20,9 @@
             }
         }
         
-        public string GetEnvironmentVariable(string name) => Envs.TryGetValue(name, out var val) ? val : string.Empty;
+    public string GetEnvironmentVariable(string name) => Envs.TryGetValue(name, out var val) ? val : string.Empty;
 
-        public string DiagnosticsFile => System.Environment.GetEnvironmentVariable("MSBUILDDIAGNOSTICSFILE") ?? string.Empty;
+    public string DiagnosticsFile => System.Environment.GetEnvironmentVariable("MSBUILDDIAGNOSTICSFILE") ?? string.Empty;
 
-        public bool TargetOutputLogging => !string.IsNullOrEmpty(System.Environment.GetEnvironmentVariable("MSBUILDTARGETOUTPUTLOGGING"));        
-    }
+    public bool TargetOutputLogging => !string.IsNullOrEmpty(System.Environment.GetEnvironmentVariable("MSBUILDTARGETOUTPUTLOGGING"));        
 }

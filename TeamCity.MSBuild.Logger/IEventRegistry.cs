@@ -1,10 +1,9 @@
-namespace TeamCity.MSBuild.Logger
-{
-    using System;
-    using Microsoft.Build.Framework;
+namespace TeamCity.MSBuild.Logger;
 
-    internal interface IEventRegistry
-    {
-        IDisposable Register(BuildEventArgs buildEventArgs);
-    }
+using System;
+using Microsoft.Build.Framework;
+
+internal interface IEventRegistry
+{
+    IDisposable Register(BuildEventArgs buildEventArgs);
 }

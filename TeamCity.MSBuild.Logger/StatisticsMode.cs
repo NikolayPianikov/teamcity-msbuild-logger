@@ -1,9 +1,8 @@
-﻿namespace TeamCity.MSBuild.Logger
-{
-    internal enum StatisticsMode
-    {
-        Default,
+﻿namespace TeamCity.MSBuild.Logger;
 
-        TeamCity
-    }
+internal enum StatisticsMode
+{
+    Default,
+
+    TeamCity
 }

@@ -1,37 +1,37 @@
-﻿namespace TeamCity.MSBuild.Logger
+﻿namespace TeamCity.MSBuild.Logger;
+
+using System;
+using System.Diagnostics.CodeAnalysis;
+using Microsoft.Build.Framework;
+
+[SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
+[SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
+internal class TargetStartedEventMinimumFields
 {
-    using System;
-    using System.Diagnostics.CodeAnalysis;
-    using Microsoft.Build.Framework;
+    public DateTime TimeStamp { get; }
 
-    [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
-    [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
-    internal class TargetStartedEventMinimumFields
+    public string TargetName { get; }
+
+    public string TargetFile { get; }
+
+    public string ProjectFile { get; }
+
+    public string Message { get; }
+
+    public bool ShowTargetFinishedEvent { get; set; }
+
+    public bool ErrorInTarget { get; set; }
+
+    public BuildEventContext TargetBuildEventContext { get; }
+
+    public string ParentTarget { get; }
+
+    public string FullTargetKey { get; }
+
+    public TargetStartedEventMinimumFields(
+        TargetStartedEventArgs startedEvent,
+        bool requireTimeStamp)
     {
-        public DateTime TimeStamp { get; }
-
-        public string TargetName { get; }
-
-        public string TargetFile { get; }
-
-        public string ProjectFile { get; }
-
-        public string Message { get; }
-
-        public bool ShowTargetFinishedEvent { get; set; }
-
-        public bool ErrorInTarget { get; set; }
-
-        public BuildEventContext TargetBuildEventContext { get; }
-
-        public string ParentTarget { get; }
-
-        public string FullTargetKey { get; }
-
-        public TargetStartedEventMinimumFields(
-            TargetStartedEventArgs startedEvent,
-            bool requireTimeStamp)
-        {
             TargetName = startedEvent.TargetName;
             TargetFile = startedEvent.TargetFile;
             ProjectFile = startedEvent.ProjectFile;
@@ -47,5 +47,4 @@
             ParentTarget = startedEvent.ParentTarget;
             FullTargetKey = $"{TargetFile}.{TargetName}";
         }
-    }
 }

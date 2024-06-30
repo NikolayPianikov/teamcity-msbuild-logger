@@ -1,13 +1,10 @@
-﻿namespace TeamCity.MSBuild.Logger
+﻿namespace TeamCity.MSBuild.Logger;
+
+internal interface IEnvironment
 {
-    using JetBrains.Annotations;
-
-    internal interface IEnvironment
-    {
-        string GetEnvironmentVariable(string name);
+    string GetEnvironmentVariable(string name);
         
-        bool TargetOutputLogging { get; }
+    bool TargetOutputLogging { get; }
 
-        [NotNull] string DiagnosticsFile { get; }
-    }
+    string DiagnosticsFile { get; }
 }

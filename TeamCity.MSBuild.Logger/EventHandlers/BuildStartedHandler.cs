@@ -1,27 +1,26 @@
-﻿namespace TeamCity.MSBuild.Logger.EventHandlers
+﻿namespace TeamCity.MSBuild.Logger.EventHandlers;
+
+using Microsoft.Build.Framework;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+
+// ReSharper disable once ClassNeverInstantiated.Global
+internal class BuildStartedHandler : IBuildEventHandler<BuildStartedEventArgs>
 {
-    using Microsoft.Build.Framework;
-    using System;
-    using System.Collections.Generic;
-    using System.Globalization;
-    using JetBrains.Annotations;
+    private readonly IStringService _stringService;
+    private readonly IHierarchicalMessageWriter _hierarchicalMessageWriter;
+    private readonly IMessageWriter _messageWriter;
+    private readonly ILoggerContext _context;
+    private readonly ILogWriter _logWriter;
 
-    // ReSharper disable once ClassNeverInstantiated.Global
-    internal class BuildStartedHandler : IBuildEventHandler<BuildStartedEventArgs>
+    public BuildStartedHandler(
+        ILoggerContext context,
+        ILogWriter logWriter,
+        IMessageWriter messageWriter,
+        IHierarchicalMessageWriter hierarchicalMessageWriter,
+        IStringService stringService)
     {
-        [NotNull] private readonly IStringService _stringService;
-        [NotNull] private readonly IHierarchicalMessageWriter _hierarchicalMessageWriter;
-        [NotNull] private readonly IMessageWriter _messageWriter;
-        [NotNull] private readonly ILoggerContext _context;
-        [NotNull] private readonly ILogWriter _logWriter;
-
-        public BuildStartedHandler(
-            [NotNull] ILoggerContext context,
-            [NotNull] ILogWriter logWriter,
-            [NotNull] IMessageWriter messageWriter,
-            [NotNull] IHierarchicalMessageWriter hierarchicalMessageWriter,
-            [NotNull] IStringService stringService)
-        {
             _stringService = stringService ?? throw new ArgumentNullException(nameof(stringService));
             _hierarchicalMessageWriter = hierarchicalMessageWriter ?? throw new ArgumentNullException(nameof(hierarchicalMessageWriter));
             _messageWriter = messageWriter ?? throw new ArgumentNullException(nameof(messageWriter));
@@ -29,8 +28,8 @@
             _logWriter = logWriter ?? throw new ArgumentNullException(nameof(logWriter));
         }
 
-        public void Handle(BuildStartedEventArgs e)
-        {
+    public void Handle(BuildStartedEventArgs e)
+    {
             if (e == null) throw new ArgumentNullException(nameof(e));
             _context.BuildStarted = e.Timestamp;
             _context.HasBuildStarted = true;
@@ -47,8 +46,8 @@
             WriteEnvironment(e.BuildEnvironment);
         }
 
-        private void WriteEnvironment([CanBeNull] IDictionary<string, string> environment)
-        {
+    private void WriteEnvironment(IDictionary<string, string>? environment)
+    {
             if (environment == null || environment.Count == 0 || _context.Verbosity != LoggerVerbosity.Diagnostic && !_context.Parameters.ShowEnvironment)
             {
                 return;
@@ -58,8 +57,8 @@
             _messageWriter.WriteNewLine();
         }
 
-        private void OutputEnvironment(IDictionary<string, string> environment)
-        {
+    private void OutputEnvironment(IDictionary<string, string> environment)
+    {
             if (environment == null) throw new ArgumentNullException(nameof(environment));
             _logWriter.SetColor(Color.SummaryHeader);
             _hierarchicalMessageWriter.StartBlock("Environment");
@@ -73,5 +72,4 @@
             _hierarchicalMessageWriter.FinishBlock();
             _logWriter.ResetColor();
         }
-    }
 }
