@@ -17,31 +17,26 @@ internal class LogWriter : ILogWriter
         [Tag(ColorMode.NoColor)] ILogWriter noColorLogWriter,
         [Tag(ColorMode.AnsiColor)] ILogWriter ansiColorLogWriter)
     {
-            _logWriters = new Dictionary<ColorMode, ILogWriter>
-            {
-                { ColorMode.Default, defaultLogWriter ?? throw new ArgumentNullException(nameof(defaultLogWriter))},
-                { ColorMode.TeamCity, ansiLogWriter ?? throw new ArgumentNullException(nameof(ansiLogWriter))},
-                { ColorMode.NoColor, noColorLogWriter ?? throw new ArgumentNullException(nameof(noColorLogWriter))},
-                { ColorMode.AnsiColor, ansiColorLogWriter ?? throw new ArgumentNullException(nameof(ansiColorLogWriter))}
-            };
+        _logWriters = new Dictionary<ColorMode, ILogWriter>
+        {
+            { ColorMode.Default, defaultLogWriter ?? throw new ArgumentNullException(nameof(defaultLogWriter))},
+            { ColorMode.TeamCity, ansiLogWriter ?? throw new ArgumentNullException(nameof(ansiLogWriter))},
+            { ColorMode.NoColor, noColorLogWriter ?? throw new ArgumentNullException(nameof(noColorLogWriter))},
+            { ColorMode.AnsiColor, ansiColorLogWriter ?? throw new ArgumentNullException(nameof(ansiColorLogWriter))}
+        };
 
-            _context = context ?? throw new ArgumentNullException(nameof(context));
-        }
+        _context = context ?? throw new ArgumentNullException(nameof(context));
+    }
 
-    private ILogWriter CurrentLogWriter => _logWriters[_context.Parameters?.ColorMode ?? ColorMode.Default];
+    private ILogWriter CurrentLogWriter =>
+        _logWriters[_context.Parameters.ColorMode];
 
-    public void Write(string? message, IConsole? console = null)
-    {
-            CurrentLogWriter.Write(message, console);
-        }
+    public void Write(string? message, IConsole? console = null) => 
+        CurrentLogWriter.Write(message, console);
 
-    public void SetColor(Color color)
-    {
-            CurrentLogWriter.SetColor(color);
-        }
+    public void SetColor(Color color) => 
+        CurrentLogWriter.SetColor(color);
 
-    public void ResetColor()
-    {
-            CurrentLogWriter.ResetColor();
-        }
+    public void ResetColor() => 
+        CurrentLogWriter.ResetColor();
 }

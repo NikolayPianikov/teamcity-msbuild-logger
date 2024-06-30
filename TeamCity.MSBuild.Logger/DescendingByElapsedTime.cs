@@ -9,25 +9,25 @@ internal class DescendingByElapsedTime : IComparer<IPerformanceCounter>
 
     private DescendingByElapsedTime()
     {
-        }
+    }
 
-    public int Compare(IPerformanceCounter x, IPerformanceCounter y)
+    public int Compare(IPerformanceCounter? x, IPerformanceCounter? y)
     {
-            if (x == null || y == null)
-            {
-                return 0;
-            }
-
-            if (!x.ReenteredScope && !y.ReenteredScope)
-            {
-                return TimeSpan.Compare(x.ElapsedTime, y.ElapsedTime);
-            }
-
-            if (x.Equals(y))
-            {
-                return 0;
-            }
-
-            return x.ReenteredScope ? -1 : 1;
+        if (x == null || y == null)
+        {
+            return 0;
         }
+
+        if (!x.ReenteredScope && !y.ReenteredScope)
+        {
+            return TimeSpan.Compare(x.ElapsedTime, y.ElapsedTime);
+        }
+
+        if (x.Equals(y))
+        {
+            return 0;
+        }
+
+        return x.ReenteredScope ? -1 : 1;
+    }
 }

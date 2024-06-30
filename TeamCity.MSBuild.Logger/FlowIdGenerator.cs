@@ -14,17 +14,17 @@ internal class FlowIdGenerator: IFlowIdGenerator
 
     public string NewFlowId()
     {
-            // ReSharper disable once InvertIf
-            if (_isFirst)
+        // ReSharper disable once InvertIf
+        if (_isFirst)
+        {
+            _isFirst = false;
+            var flowId = _parameters.FlowId;
+            if (!string.IsNullOrWhiteSpace(flowId))
             {
-                _isFirst = false;
-                var flowId = _parameters.FlowId;
-                if (!string.IsNullOrWhiteSpace(flowId))
-                {
-                    return flowId;
-                }
+                return flowId;
             }
-            
-            return Guid.NewGuid().ToString().Replace("-", string.Empty);
         }
+        
+        return Guid.NewGuid().ToString().Replace("-", string.Empty);
+    }
 }

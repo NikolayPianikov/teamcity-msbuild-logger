@@ -12,17 +12,20 @@ internal class Environment : IEnvironment
         
     static Environment()
     {
-            foreach (var entry in System.Environment.GetEnvironmentVariables().OfType<DictionaryEntry>())
-            {
-                var key = entry.Key?.ToString()?.Trim() ?? string.Empty;
-                var value = entry.Value?.ToString()?.Trim() ?? string.Empty; 
-                Envs[key] = value;
-            }
+        foreach (var entry in System.Environment.GetEnvironmentVariables().OfType<DictionaryEntry>())
+        {
+            var key = entry.Key?.ToString()?.Trim() ?? string.Empty;
+            var value = entry.Value?.ToString()?.Trim() ?? string.Empty; 
+            Envs[key] = value;
         }
+    }
         
-    public string GetEnvironmentVariable(string name) => Envs.TryGetValue(name, out var val) ? val : string.Empty;
+    public string? GetEnvironmentVariable(string name) =>
+        Envs.TryGetValue(name, out var val) ? val : string.Empty;
 
-    public string DiagnosticsFile => System.Environment.GetEnvironmentVariable("MSBUILDDIAGNOSTICSFILE") ?? string.Empty;
+    public string DiagnosticsFile =>
+        System.Environment.GetEnvironmentVariable("MSBUILDDIAGNOSTICSFILE") ?? string.Empty;
 
-    public bool TargetOutputLogging => !string.IsNullOrEmpty(System.Environment.GetEnvironmentVariable("MSBUILDTARGETOUTPUTLOGGING"));        
+    public bool TargetOutputLogging =>
+        !string.IsNullOrEmpty(System.Environment.GetEnvironmentVariable("MSBUILDTARGETOUTPUTLOGGING"));        
 }

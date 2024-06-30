@@ -32,10 +32,8 @@ internal class MessageWriter: IMessageWriter
         _logWriter = logWriter ?? throw new ArgumentNullException(nameof(logWriter));
     }
 
-    public void WriteLinePrefix(BuildEventContext e, DateTime eventTimeStamp, bool isMessagePrefix)
-    {
+    public void WriteLinePrefix(BuildEventContext e, DateTime eventTimeStamp, bool isMessagePrefix) => 
         WriteLinePrefix(_context.GetFullProjectKey(e).ToString(_context.Verbosity), eventTimeStamp, isMessagePrefix);
-    }
 
     public void WriteMessageAligned(string message, bool prefixAlreadyWritten, int prefixAdjustment = 0)
     {
@@ -102,10 +100,8 @@ internal class MessageWriter: IMessageWriter
         _logWriter.ResetColor();
     }
 
-    public void WriteNewLine()
-    {
+    public void WriteNewLine() => 
         _logWriter.Write(System.Environment.NewLine);
-    }
 
     public bool WriteTargetMessagePrefix(BuildEventArgs e, BuildEventContext context, DateTime timeStamp)
     {

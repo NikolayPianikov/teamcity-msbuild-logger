@@ -32,13 +32,17 @@ internal class LoggerContext: ILoggerContext
 
     public IList<BuildWarningEventArgs>? WarningList { get; private set; }
 
-    public IDictionary<BuildEventContext, IList<BuildMessageEventArgs>> DeferredMessages { get; }  = new Dictionary<BuildEventContext, IList<BuildMessageEventArgs>>(ComparerContextNodeId.Shared);
+    public IDictionary<BuildEventContext, IList<BuildMessageEventArgs>> DeferredMessages { get; } =
+        new Dictionary<BuildEventContext, IList<BuildMessageEventArgs>>(ComparerContextNodeId.Shared);
 
-    public IDictionary<string, IPerformanceCounter> ProjectPerformanceCounters { get; } = new Dictionary<string, IPerformanceCounter>(StringComparer.OrdinalIgnoreCase);
+    public IDictionary<string, IPerformanceCounter> ProjectPerformanceCounters { get; } =
+        new Dictionary<string, IPerformanceCounter>(StringComparer.OrdinalIgnoreCase);
 
-    public IDictionary<string, IPerformanceCounter> TargetPerformanceCounters { get; } = new Dictionary<string, IPerformanceCounter>(StringComparer.OrdinalIgnoreCase);
+    public IDictionary<string, IPerformanceCounter> TargetPerformanceCounters { get; } =
+        new Dictionary<string, IPerformanceCounter>(StringComparer.OrdinalIgnoreCase);
 
-    public IDictionary<string, IPerformanceCounter> TaskPerformanceCounters { get; } = new Dictionary<string, IPerformanceCounter>(StringComparer.OrdinalIgnoreCase);
+    public IDictionary<string, IPerformanceCounter> TaskPerformanceCounters { get; } =
+        new Dictionary<string, IPerformanceCounter>(StringComparer.OrdinalIgnoreCase);
 
     public bool HasBuildStarted { get; set; }
 
@@ -74,10 +78,8 @@ internal class LoggerContext: ILoggerContext
         }
     }
 
-    public bool IsVerbosityAtLeast(LoggerVerbosity checkVerbosity)
-    {
-        return Verbosity >= checkVerbosity;
-    }
+    public bool IsVerbosityAtLeast(LoggerVerbosity checkVerbosity) => 
+        Verbosity >= checkVerbosity;
 
     public void ResetConsoleLoggerState()
     {

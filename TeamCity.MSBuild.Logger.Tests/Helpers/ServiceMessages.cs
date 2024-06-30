@@ -123,8 +123,8 @@ internal static class ServiceMessages
 
     private class Flow
     {
-        private readonly Stack<Message> _messages = new Stack<Message>();
-        private readonly HashSet<string> _statistics = new HashSet<string>(StringComparer.CurrentCultureIgnoreCase);
+        private readonly Stack<Message> _messages = new();
+        private readonly HashSet<string> _statistics = new(StringComparer.CurrentCultureIgnoreCase);
 
         public Flow(string flowId)
         {

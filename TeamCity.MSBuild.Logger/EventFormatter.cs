@@ -152,8 +152,6 @@ internal class EventFormatter : IEventFormatter
         return str.Split(NewLines, StringSplitOptions.None);
     }
 
-    private static string EscapeCarriageReturn(string stringWithCarriageReturn)
-    {
-        return !string.IsNullOrEmpty(stringWithCarriageReturn) ? stringWithCarriageReturn.Replace("\r", "\\r") : stringWithCarriageReturn;
-    }
+    private static string EscapeCarriageReturn(string stringWithCarriageReturn) => 
+        !string.IsNullOrEmpty(stringWithCarriageReturn) ? stringWithCarriageReturn.Replace("\r", "\\r") : stringWithCarriageReturn;
 }

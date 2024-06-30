@@ -80,7 +80,7 @@ internal class PerformanceCounter: IPerformanceCounter
     {
         var str = string.Format(CultureInfo.CurrentCulture, "{0,5}", Math.Round(ElapsedTime.TotalMilliseconds, 0));
         _messageWriter.WriteLinePrettyFromResource(MessageIdentLevel, "PerformanceLine", str, string.Format(CultureInfo.CurrentCulture, "{0,-40}", ScopeName), string.Format(CultureInfo.CurrentCulture, "{0,3}", _calls));
-        if (_internalPerformanceCounters == null || _internalPerformanceCounters.Count <= 0)
+        if (_internalPerformanceCounters is not { Count: > 0 })
         {
             return;
         }

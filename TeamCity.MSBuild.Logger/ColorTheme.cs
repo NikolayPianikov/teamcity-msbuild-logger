@@ -26,7 +26,7 @@ internal class ColorTheme : IColorTheme
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-    private IColorTheme CurrentColorTheme => _colorThemes[_context.Parameters?.ColorThemeMode ?? ColorThemeMode.Default];
+    private IColorTheme CurrentColorTheme => _colorThemes[_context.Parameters.ColorThemeMode];
 
     public ConsoleColor GetConsoleColor(Color color)
     {

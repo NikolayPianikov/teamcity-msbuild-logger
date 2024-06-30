@@ -5,66 +5,34 @@ using System;
 // ReSharper disable once ClassNeverInstantiated.Global
 internal class DefaultColorTheme : IColorTheme
 {
-    public ConsoleColor GetConsoleColor(Color color)
-    {
-            switch (color)
-            {
-                case Color.BuildStage:
-                    return ConsoleColor.Cyan;
-                case Color.SummaryHeader:
-                case Color.PerformanceHeader:
-                case Color.Items:
-                    return ConsoleColor.Blue;
-                case Color.Success:
-                    return ConsoleColor.Green;
-                case Color.Warning:
-                case Color.WarningSummary:
-                    return ConsoleColor.Yellow;
-                case Color.Error:
-                case Color.ErrorSummary:
-                    return ConsoleColor.Red;
-                case Color.SummaryInfo:
-                    return ConsoleColor.Gray;
-                case Color.Details:
-                    return ConsoleColor.DarkGray;
-                case Color.Task:
-                    return ConsoleColor.DarkCyan;
-                case Color.PerformanceCounterInfo:
-                    return ConsoleColor.White;
-                default:
-                    throw new ArgumentException($"Unknown color \"{color}\"");
-            }
+    public ConsoleColor GetConsoleColor(Color color) =>
+        color switch
+        {
+            Color.BuildStage => ConsoleColor.Cyan,
+            Color.SummaryHeader or Color.PerformanceHeader or Color.Items => ConsoleColor.Blue,
+            Color.Success => ConsoleColor.Green,
+            Color.Warning or Color.WarningSummary => ConsoleColor.Yellow,
+            Color.Error or Color.ErrorSummary => ConsoleColor.Red,
+            Color.SummaryInfo => ConsoleColor.Gray,
+            Color.Details => ConsoleColor.DarkGray,
+            Color.Task => ConsoleColor.DarkCyan,
+            Color.PerformanceCounterInfo => ConsoleColor.White,
+            _ => throw new ArgumentException($"Unknown color \"{color}\"")
+        };
 
-
-        }
-
-    public string GetAnsiColor(Color color)
-    {
-            // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
-            switch (color)
-            {
-                case Color.Task:
-                    return "36";
-                case Color.SummaryInfo:
-                    return "37";
-                case Color.Details:
-                    return "30;1";
-                case Color.Success:
-                    return "32;1";
-                case Color.SummaryHeader:
-                case Color.PerformanceHeader:
-                case Color.Items:
-                    return "34;1";
-                case Color.BuildStage:
-                    return "36;1";
-                case Color.Error:
-                    return "31;1";
-                case Color.Warning:
-                    return "33;1";
-                case Color.PerformanceCounterInfo:
-                    return "37;1";
-                default:
-                    throw new ArgumentException($"Unknown color \"{color}\"");
-            }
-        }
+    public string GetAnsiColor(Color color) =>
+        // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
+        color switch
+        {
+            Color.Task => "36",
+            Color.SummaryInfo => "37",
+            Color.Details => "30;1",
+            Color.Success => "32;1",
+            Color.SummaryHeader or Color.PerformanceHeader or Color.Items => "34;1",
+            Color.BuildStage => "36;1",
+            Color.Error => "31;1",
+            Color.Warning => "33;1",
+            Color.PerformanceCounterInfo => "37;1",
+            _ => throw new ArgumentException($"Unknown color \"{color}\"")
+        };
 }

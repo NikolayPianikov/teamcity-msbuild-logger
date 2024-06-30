@@ -53,7 +53,7 @@ internal class ProjectStartedHandler : IBuildEventHandler<ProjectStartedEventArg
 
         if (_context.DeferredMessages.TryGetValue(e.BuildEventContext, out var messages))
         {
-            if (!_context.Parameters.ShowOnlyErrors && !_context.Parameters.ShowOnlyWarnings)
+            if (_context.Parameters is { ShowOnlyErrors: false, ShowOnlyWarnings: false })
             {
                 foreach (var message in messages)
                 {
@@ -69,7 +69,7 @@ internal class ProjectStartedHandler : IBuildEventHandler<ProjectStartedEventArg
             return;
         }
 
-        if (!_context.Parameters.ShowOnlyErrors && !_context.Parameters.ShowOnlyWarnings)
+        if (_context.Parameters is { ShowOnlyErrors: false, ShowOnlyWarnings: false })
         {
             _deferredMessageWriter.DisplayDeferredProjectStartedEvent(e.BuildEventContext);
         }

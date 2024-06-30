@@ -43,7 +43,7 @@ internal class ErrorHandler : IBuildEventHandler<BuildErrorEventArgs>
         }
 
         _deferredMessageWriter.DisplayDeferredStartedEvents(e.BuildEventContext);
-        if (_context.Parameters.ShowOnlyWarnings && !_context.Parameters.ShowOnlyErrors)
+        if (_context.Parameters is { ShowOnlyWarnings: true, ShowOnlyErrors: false })
         {
             return;
         }

@@ -49,7 +49,7 @@ internal class ProjectFinishedHandler : IBuildEventHandler<ProjectFinishedEventA
         if (_context.IsVerbosityAtLeast(LoggerVerbosity.Normal) && projectStartedEvent.ShowProjectFinishedEvent)
         {
             _context.LastProjectFullKey = _context.GetFullProjectKey(e.BuildEventContext);
-            if (!_context.Parameters.ShowOnlyErrors && !_context.Parameters.ShowOnlyWarnings)
+            if (_context.Parameters is { ShowOnlyErrors: false, ShowOnlyWarnings: false })
             {
                 _messageWriter.WriteLinePrefix(e.BuildEventContext, e.Timestamp, false);
                 _logWriter.SetColor(Color.BuildStage);

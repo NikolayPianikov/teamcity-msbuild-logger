@@ -2,7 +2,7 @@
 
 internal interface IEnvironment
 {
-    string GetEnvironmentVariable(string name);
+    string? GetEnvironmentVariable(string name);
         
     bool TargetOutputLogging { get; }
 

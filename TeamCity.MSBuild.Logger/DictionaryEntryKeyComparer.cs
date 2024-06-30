@@ -9,7 +9,7 @@ internal class DictionaryEntryKeyComparer : IComparer<Property>
 
     private DictionaryEntryKeyComparer()
     {
-        }
+    }
 
     public int Compare(Property x, Property y) => string.Compare(x.Name, y.Name, StringComparison.CurrentCultureIgnoreCase);
 }

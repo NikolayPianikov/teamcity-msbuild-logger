@@ -8,7 +8,7 @@ internal readonly struct Property
 
     public Property(string name, string value)
     {
-            Name = name;
-            Value = value;
-        }
+        Name = name;
+        Value = value;
+    }
 }

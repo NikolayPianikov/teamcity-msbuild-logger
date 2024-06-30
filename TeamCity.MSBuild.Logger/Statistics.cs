@@ -15,18 +15,17 @@ internal class Statistics : IStatistics
         [Tag(StatisticsMode.Default)] IStatistics defaultStatistics,
         [Tag(StatisticsMode.TeamCity)] IStatistics teamcityStatistics)
     {
-            _context = context ?? throw new ArgumentNullException(nameof(context));
-            _statistics = new Dictionary<StatisticsMode, IStatistics>
-            {
-                { StatisticsMode.Default, defaultStatistics ?? throw new ArgumentNullException(nameof(defaultStatistics))},
-                { StatisticsMode.TeamCity, teamcityStatistics ?? throw new ArgumentNullException(nameof(teamcityStatistics))}
-            };
-        }
+        _context = context ?? throw new ArgumentNullException(nameof(context));
+        _statistics = new Dictionary<StatisticsMode, IStatistics>
+        {
+            { StatisticsMode.Default, defaultStatistics ?? throw new ArgumentNullException(nameof(defaultStatistics))},
+            { StatisticsMode.TeamCity, teamcityStatistics ?? throw new ArgumentNullException(nameof(teamcityStatistics))}
+        };
+    }
 
-    private IStatistics CurrentStatistics => _statistics[_context.Parameters?.StatisticsMode ?? StatisticsMode.Default];
+    private IStatistics CurrentStatistics =>
+        _statistics[_context.Parameters.StatisticsMode];
 
-    public void Publish()
-    {
-            CurrentStatistics.Publish();
-        }
+    public void Publish() => 
+        CurrentStatistics.Publish();
 }

@@ -10,15 +10,15 @@ internal class TaskItemItemSpecComparer : IComparer<ITaskItem>
 
     private TaskItemItemSpecComparer()
     {
-        }
+    }
 
-    public int Compare(ITaskItem x, ITaskItem y)
+    public int Compare(ITaskItem? x, ITaskItem? y)
     {
-            if (x == null || y == null)
-            {
-                return 0;
-            }
-
-            return string.Compare(x.ItemSpec, y.ItemSpec, StringComparison.CurrentCultureIgnoreCase);
+        if (x == null || y == null)
+        {
+            return 0;
         }
+
+        return string.Compare(x.ItemSpec, y.ItemSpec, StringComparison.CurrentCultureIgnoreCase);
+    }
 }

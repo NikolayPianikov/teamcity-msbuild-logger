@@ -32,19 +32,19 @@ internal class TargetStartedEventMinimumFields
         TargetStartedEventArgs startedEvent,
         bool requireTimeStamp)
     {
-            TargetName = startedEvent.TargetName;
-            TargetFile = startedEvent.TargetFile;
-            ProjectFile = startedEvent.ProjectFile;
-            ShowTargetFinishedEvent = false;
-            ErrorInTarget = false;
-            Message = startedEvent.Message;
-            TargetBuildEventContext = startedEvent.BuildEventContext;
-            if (requireTimeStamp)
-            {
-                TimeStamp = startedEvent.Timestamp;
-            }
-
-            ParentTarget = startedEvent.ParentTarget;
-            FullTargetKey = $"{TargetFile}.{TargetName}";
+        TargetName = startedEvent.TargetName;
+        TargetFile = startedEvent.TargetFile;
+        ProjectFile = startedEvent.ProjectFile;
+        ShowTargetFinishedEvent = false;
+        ErrorInTarget = false;
+        Message = startedEvent.Message;
+        TargetBuildEventContext = startedEvent.BuildEventContext;
+        if (requireTimeStamp)
+        {
+            TimeStamp = startedEvent.Timestamp;
         }
+
+        ParentTarget = startedEvent.ParentTarget;
+        FullTargetKey = $"{TargetFile}.{TargetName}";
+    }
 }

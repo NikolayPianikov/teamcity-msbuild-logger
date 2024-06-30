@@ -70,7 +70,7 @@ internal class TargetFinishedHandler : IBuildEventHandler<TargetFinishedEventArg
                     }
                 }
 
-                if (!_context.Parameters.ShowOnlyErrors && !_context.Parameters.ShowOnlyWarnings)
+                if (_context.Parameters is { ShowOnlyErrors: false, ShowOnlyWarnings: false })
                 {
                     _context.LastProjectFullKey = _context.GetFullProjectKey(e.BuildEventContext);
                     _messageWriter.WriteLinePrefix(e.BuildEventContext, e.Timestamp, false);

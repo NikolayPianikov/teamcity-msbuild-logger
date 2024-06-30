@@ -11,7 +11,7 @@ internal readonly struct TaskItem
 
     public TaskItem(string name, ITaskItem item)
     {
-            Name = name ?? throw new ArgumentNullException(nameof(name));
-            Item = item ?? throw new ArgumentNullException(nameof(item));
-        }
+        Name = name ?? throw new ArgumentNullException(nameof(name));
+        Item = item ?? throw new ArgumentNullException(nameof(item));
+    }
 }

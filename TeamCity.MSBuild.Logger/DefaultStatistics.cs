@@ -5,5 +5,5 @@ internal class DefaultStatistics : IStatistics
 {
     public void Publish()
     {
-        }
+    }
 }

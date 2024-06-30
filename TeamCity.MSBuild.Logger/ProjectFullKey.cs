@@ -7,9 +7,9 @@ internal class ProjectFullKey
 {
     public ProjectFullKey(int projectKey, int entryPointKey)
     {
-            ProjectKey = projectKey;
-            EntryPointKey = entryPointKey;
-        }
+        ProjectKey = projectKey;
+        EntryPointKey = entryPointKey;
+    }
 
     public int ProjectKey { get; }
 
@@ -25,7 +25,7 @@ internal class ProjectFullKey
             return EntryPointKey <= 1 ? string.Format(CultureInfo.InvariantCulture, "{0}", ProjectKey) : string.Format(CultureInfo.InvariantCulture, "{0}:{1}", ProjectKey, EntryPointKey);
         }
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
             if (obj is ProjectFullKey projectFullKey && projectFullKey.ProjectKey == ProjectKey)
             {

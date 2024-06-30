@@ -92,7 +92,7 @@ internal class NodeLogger : INodeLogger
         set => _parameters.ShowSummary = value;
     }
 
-    public LoggerVerbosity Verbosity { get; set; } = LoggerVerbosity.Normal;
+    public LoggerVerbosity Verbosity { get; set; } =LoggerVerbosity.Normal;
 
     public string? Parameters { get; set; }
 
@@ -184,15 +184,11 @@ internal class NodeLogger : INodeLogger
         _diagnostics.Send(() => _parameters.ToString());
     }
 
-    public void Initialize(IEventSource eventSource)
-    {
+    public void Initialize(IEventSource eventSource) => 
         Initialize(eventSource, 1);
-    }
 
-    public virtual void Shutdown()
-    {
+    public virtual void Shutdown() => 
         _diagnostics.Send(() => "Shutdown()");
-    }
 
     private void Handle<TBuildEventArgs>(IBuildEventHandler<TBuildEventArgs> handler, TBuildEventArgs? e)
         where TBuildEventArgs : BuildEventArgs

@@ -46,7 +46,7 @@ internal class BuildFinishedHandler : IBuildEventHandler<BuildFinishedEventArgs>
 
         _statistics.Publish();
 
-        if (!_context.Parameters.ShowOnlyErrors && !_context.Parameters.ShowOnlyWarnings && _context.DeferredMessages.Count > 0 && _context.IsVerbosityAtLeast(LoggerVerbosity.Normal))
+        if (_context is { Parameters: { ShowOnlyErrors: false, ShowOnlyWarnings: false }, DeferredMessages.Count: > 0 } && _context.IsVerbosityAtLeast(LoggerVerbosity.Normal))
         {
             _messageWriter.WriteLinePrettyFromResource("DeferredMessages");
             foreach (var message in _context.DeferredMessages.Values.SelectMany(i => i))
@@ -123,7 +123,7 @@ internal class BuildFinishedHandler : IBuildEventHandler<BuildFinishedEventArgs>
 
         _messageWriter.WriteNewLine();
 
-        if (_context.WarningList != null && _context.WarningList.Count > 0)
+        if (_context.WarningList is { Count: > 0 })
         {
             _logWriter.SetColor(Color.WarningSummary);
             foreach (var warning in _context.WarningList)
@@ -132,7 +132,7 @@ internal class BuildFinishedHandler : IBuildEventHandler<BuildFinishedEventArgs>
             }
         }
 
-        if (_context.ErrorList != null && _context.ErrorList.Count > 0)
+        if (_context.ErrorList is { Count: > 0 })
         {
             _logWriter.SetColor(Color.ErrorSummary);
             foreach (var error in _context.ErrorList)

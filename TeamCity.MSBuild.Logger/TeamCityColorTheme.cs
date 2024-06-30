@@ -9,30 +9,18 @@ internal class TeamCityColorTheme : IColorTheme
     private readonly IColorTheme _defaultColorTheme;
 
     public TeamCityColorTheme(
-        [Tag(ColorThemeMode.Default)] IColorTheme defaultColorTheme)
-    {
-            _defaultColorTheme = defaultColorTheme ?? throw new ArgumentNullException(nameof(defaultColorTheme));
-        }
+        [Tag(ColorThemeMode.Default)] IColorTheme defaultColorTheme) =>
+        _defaultColorTheme = defaultColorTheme ?? throw new ArgumentNullException(nameof(defaultColorTheme));
 
-    public ConsoleColor GetConsoleColor(Color color)
-    {
-            return _defaultColorTheme.GetConsoleColor(color);
-        }
+    public ConsoleColor GetConsoleColor(Color color) => 
+        _defaultColorTheme.GetConsoleColor(color);
 
-    public string GetAnsiColor(Color color)
-    {
-            // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
-            switch (color)
-            {
-                case Color.SummaryInfo:
-                case Color.PerformanceCounterInfo:
-                    return "35";
-                case Color.Details:
-                    return "34;1";
-                case Color.Task:
-                    return "36";
-                default:
-                    return _defaultColorTheme.GetAnsiColor(color);
-            }
-        }
+    public string GetAnsiColor(Color color) =>
+        color switch
+        {
+            Color.SummaryInfo or Color.PerformanceCounterInfo => "35",
+            Color.Details => "34;1",
+            Color.Task => "36",
+            _ => _defaultColorTheme.GetAnsiColor(color)
+        };
 }

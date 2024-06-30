@@ -43,7 +43,7 @@ internal class TaskFinishedHandler : IBuildEventHandler<TaskFinishedEventArgs>
                 return;
             }
 
-            if (!_context.Parameters.ShowOnlyErrors && !_context.Parameters.ShowOnlyWarnings)
+            if (_context.Parameters is { ShowOnlyErrors: false, ShowOnlyWarnings: false })
             {
                 var prefixAlreadyWritten = _messageWriter.WriteTargetMessagePrefix(e, e.BuildEventContext, e.Timestamp);
                 _logWriter.SetColor(Color.Task);

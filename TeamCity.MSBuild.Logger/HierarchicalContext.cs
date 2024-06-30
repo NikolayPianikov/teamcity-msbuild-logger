@@ -17,12 +17,11 @@ internal class HierarchicalContext: IDisposable
         _currentHierarchicalContext = this;
     }
 
-    public static HierarchicalContext Current => _currentHierarchicalContext ?? Default;
+    public static HierarchicalContext Current =>
+        _currentHierarchicalContext ?? Default;
 
     public int FlowId { get; }
 
-    public void Dispose()
-    {
+    public void Dispose() => 
         _currentHierarchicalContext = _prevHierarchicalContext;
-    }
 }

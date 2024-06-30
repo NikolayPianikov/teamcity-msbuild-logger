@@ -7,18 +7,16 @@ internal class ComparerContextNodeIdTargetId : IEqualityComparer<BuildEventConte
 {
     public static readonly IEqualityComparer<BuildEventContext> Shared = new ComparerContextNodeIdTargetId();
 
-    public bool Equals(BuildEventContext x, BuildEventContext y)
+    public bool Equals(BuildEventContext? x, BuildEventContext? y)
     {
-            if (x == null || y == null || x.NodeId != y.NodeId || x.ProjectContextId != y.ProjectContextId)
-            {
-                return false;
-            }
-
-            return x.TargetId == y.TargetId;
+        if (x == null || y == null || x.NodeId != y.NodeId || x.ProjectContextId != y.ProjectContextId)
+        {
+            return false;
         }
 
-    public int GetHashCode(BuildEventContext x)
-    {
-            return x.ProjectContextId + (x.NodeId << 24);
-        }
+        return x.TargetId == y.TargetId;
+    }
+
+    public int GetHashCode(BuildEventContext x) => 
+        x.ProjectContextId + (x.NodeId << 24);
 }
