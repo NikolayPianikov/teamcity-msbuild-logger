@@ -1,5 +1,6 @@
 ﻿// ReSharper disable PartialTypeWithSinglePart
 // ReSharper disable UnusedMember.Local
+
 namespace TeamCity.MSBuild.Logger;
 
 using JetBrains.TeamCity.ServiceMessages.Write;
@@ -8,12 +9,11 @@ using static Lifetime;
 
 internal partial class Composition
 {
-    private static void Setup() =>
-        DI.Setup()
-            .Hint(Hint.Resolve, "Off")
-            .Root<INodeLogger>("Logger")
+    private static void Setup() => DI.Setup()
+        .Hint(Hint.Resolve, "Off")
+        .Root<INodeLogger>("Logger")
 
-            .DefaultLifetime(Singleton)
+        .DefaultLifetime(Singleton)
             .Bind().To<NodeLogger>()
             .Bind().To<Environment>()
             .Bind().To<Diagnostics>()
@@ -23,17 +23,17 @@ internal partial class Composition
             .Bind().To<BuildEventManager>()
             .Bind().To<DeferredMessageWriter>()
             .Bind().To<MessageWriter>()
-            .Bind().Bind<IEventRegistry>().To<EventContext>()
+            .Bind().To<EventContext>()
             .Bind().To<HierarchicalMessageWriter>()
             .Bind().Tags(ColorMode.TeamCity, TeamCityMode.SupportHierarchy).To<TeamCityHierarchicalMessageWriter>()
             .Bind().To<LogWriter>()
             .Bind().To<ColorTheme>()
-                
+
             // Statistics
             .Bind().To<Statistics>()
             .Bind(StatisticsMode.Default).To<DefaultStatistics>()
             .Bind(StatisticsMode.TeamCity).To<TeamCityStatistics>()
-                
+
             // Build event handlers
             .Bind().To<BuildFinishedHandler>()
             .Bind().To<BuildStartedHandler>()
@@ -47,7 +47,6 @@ internal partial class Composition
             .Bind().To<TaskFinishedHandler>()
             .Bind().To<TaskStartedHandler>()
             .Bind().To<WarningHandler>()
-
             .Bind().To<TeamCityServiceMessages>()
             .Bind().To<FlowIdGenerator>()
             .Bind<DateTime>().As(Transient).To(_ => DateTime.Now)
@@ -55,18 +54,14 @@ internal partial class Composition
             .Bind(Tag.Type).To<BuildWarningMessageUpdater>()
             .Bind(Tag.Type).To<BuildMessageMessageUpdater>()
             .Bind<ITeamCityWriter>().To(
-                ctx =>
-                {
-                    ctx.Inject(out ITeamCityServiceMessages messages);
-                    ctx.Inject(ColorMode.NoColor, out ILogWriter logWriter);
-                    return messages.CreateWriter(str => logWriter.Write(str + "\n"));
-                })
-                
-            .DefaultLifetime(Transient)
+                (ITeamCityServiceMessages messages, [Tag(ColorMode.NoColor)] ILogWriter writer) =>
+                    messages.CreateWriter(str => writer.Write(str + "\n")))
+
+        .DefaultLifetime(Transient)
             .Bind().To<PerformanceCounter>()
             .Bind().To<ColorStorage>()
-                    
-            .DefaultLifetime(PerBlock)
+
+        .DefaultLifetime(PerBlock)
             .Bind().To<StringService>()
             .Bind().To<PathService>()
             .Bind().To<ParametersParser>()

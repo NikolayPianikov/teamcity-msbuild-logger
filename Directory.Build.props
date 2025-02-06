@@ -1,0 +1,10 @@
+<Project>
+
+    <PropertyGroup>
+        <LangVersion>12.0</LangVersion>
+        <Nullable>enable</Nullable>
+        <NoWarn>$(NoWarn);NETSDK1215;NU1701;MSB3073</NoWarn>
+    </PropertyGroup>
+
+</Project>
+
